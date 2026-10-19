@@ -23,7 +23,11 @@ button{border:0;border-radius:10px;padding:13px 16px;font-weight:bold;cursor:poi
 .preview{overflow:auto;background:#e8edf4;padding:12px;border-radius:10px;text-align:center}
 #paper{background:white;width:100%;max-width:440px;margin:auto;box-shadow:0 2px 10px #0002}
 #paper svg{display:block;width:100%;height:auto}
- 
+ @media screen {
+  .print-area {
+    display: none !important;
+  }
+ } 
 /* Tampilan garis pola prakarya */
 #paper svg polygon {
   stroke: #111;
@@ -81,26 +85,38 @@ header,.controls,.preview-title,footer,.note-screen,.status{
     </p>
   </section>
 
-  <section class="panel">
 
- 
-<section class="panel controls">
-  <h2>Karakter Karton 3D</h2>
-  <label for="character">Pilih karakter</label>
-  <select id="character">
-    <option value="rabbit">Kelinci</option>
-    <option value="cat">Kucing</option>
-    <option value="robot">Robot</option>
-  </select>
-  <p class="note">
-    Pilih karakter untuk membuat pola prakarya 3D.
-  </p>
-  <button class="primary" id="characterButton" type="button">
-    Buat Pola Karakter
-  </button>
-</section>
+  <section class="panel print-area">
+    <h2 class="preview-title">Pratinjau Pola</h2>
+    <div class="preview">
+      <div id="paper"></div>
+    </div>
+    <p class="status" id="status" aria-live="polite">
+      Pola siap dibuat.
+    </p>
+    <p class="note note-screen">
+      Garis hitam utuh = potong. Garis putus-putus = lipat.
+      Lidah perekat digunakan untuk menyambungkan sisi kubus.
+    </p>
+  </section>
 
+  <section class="panel controls">
+    <h2>Karakter Karton 3D</h2>
+    <label for="character">Pilih karakter</label>
+    <select id="character">
+      <option value="rabbit">Kelinci</option>
+      <option value="cat">Kucing</option>
+      <option value="robot">Robot</option>
+    </select>
+    <p class="note">
+      Pilih karakter untuk membuat pola prakarya 3D.
+    </p>
+    <button class="primary" id="characterButton" type="button">
+      Buat Pola Karakter
+    </button>
+  </section>
 </main>
+
 
 <footer>Kids Craft Maker · Pola prakarya anak</footer>
 
