@@ -23,6 +23,20 @@ button{border:0;border-radius:10px;padding:13px 16px;font-weight:bold;cursor:poi
 .preview{overflow:auto;background:#e8edf4;padding:12px;border-radius:10px;text-align:center}
 #paper{background:white;width:100%;max-width:440px;margin:auto;box-shadow:0 2px 10px #0002}
 #paper svg{display:block;width:100%;height:auto}
+ 
+/* Tampilan garis pola prakarya */
+#paper svg polygon {
+  stroke: #111;
+  stroke-width: 0.45;
+  stroke-linejoin: round;
+}
+#paper svg rect {
+  stroke: #111;
+}
+
+#paper svg line {
+  stroke: #555;
+}
 .status{font-size:14px;line-height:1.6}
 footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
 @media print{
