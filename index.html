@@ -159,6 +159,30 @@ function createPattern() {
   });
   title.textContent = "POLA KUBUS";
   svg.appendChild(title);
+ 
+const instruction = svgEl("text", {
+  x: pageW / 2,
+  y: 49,
+  "text-anchor": "middle",
+  "font-size": 3,
+  "font-family": "Arial",
+  fill: "#333"
+});
+instruction.textContent =
+  "Garis utuh: potong | Garis putus-putus: lipat";
+svg.appendChild(instruction);
+
+const instruction2 = svgEl("text", {
+  x: pageW / 2,
+  y: 54,
+  "text-anchor": "middle",
+  "font-size": 3,
+  "font-family": "Arial",
+  fill: "#333"
+});
+instruction2.textContent =
+  "Oleskan lem pada lidah perekat, lalu satukan sisi kubus.";
+svg.appendChild(instruction2);
 
   const subtitle = svgEl("text", {
     x: pageW/2, y: 31, "text-anchor": "middle",
