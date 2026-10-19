@@ -4,6 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kids Craft Maker</title>
+ /* Sembunyikan pratinjau di layar */
+@media screen {
+  .preview-title,
+  .print-area .preview,
+  .print-area .status,
+  .print-area .note-screen {
+    display: none !important;
+  }
+}
+
+/* Tetap tampilkan pola ketika mencetak PDF */
+@media print {
+  .print-area .preview {
+    display: block !important;
+  }
+}
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f7fb;color:#243047;font-family:Arial,sans-serif}
