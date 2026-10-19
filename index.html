@@ -94,6 +94,23 @@ header,.controls,.preview-title,footer,.note-screen,.status{
       Lidah perekat digunakan untuk menyambungkan sisi kubus.
     </p>
   </section>
+ 
+<section class="panel controls">
+  <h2>Karakter Karton 3D</h2>
+  <label for="character">Pilih karakter</label>
+  <select id="character">
+    <option value="rabbit">Kelinci</option>
+    <option value="cat">Kucing</option>
+    <option value="robot">Robot</option>
+  </select>
+  <p class="note">
+    Pilih karakter untuk membuat pola prakarya 3D.
+  </p>
+  <button class="primary" id="characterButton" type="button">
+    Buat Pola Karakter
+  </button>
+</section>
+
 </main>
 
 <footer>Kids Craft Maker · Pola prakarya anak</footer>
@@ -315,6 +332,15 @@ document.getElementById("save").addEventListener("click", () => {
 });
 
 createPattern();
+ 
+document.getElementById("characterButton").addEventListener("click", () => {
+  const character = document.getElementById("character").value;
+  alert(
+    "Karakter " + character +
+    " dipilih. Generator pola karakter akan dibuat pada tahap berikutnya."
+  );
+});
+
 </script>
 </body>
 </html>
