@@ -63,6 +63,7 @@ footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
 <option value="cube">Pola Kubus</option>
 <option value="squishy">DIY Squishy Paper</option>
 <option value="envelope">Amplop Kreatif</option>
+<option value="character">Karakter 3D</option>
 </select>
 <div id="cubeOptions">
 <label for="side" id="sideLabel">Panjang sisi kubus (cm)</label>
@@ -101,6 +102,23 @@ footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
 <option value="flower">Bunga</option>
 </select>
 <p class="note" id="envelopeNote">Pola amplop dengan garis potong dan garis lipat.</p>
+</div>
+<div id="characterOptions" hidden>
+  <label for="characterName" id="characterNameLabel">
+    Pilih karakter 3D
+  </label>
+  <select id="characterName">
+    <option value="bunny">Kelinci lucu</option>
+    <option value="cat">Kucing imut</option>
+    <option value="bear">Beruang lucu</option>
+    <option value="robot">Robot lucu</option>
+    <option value="doraemon">Robot kucing biru</option>
+    <option value="teddy">Beruang merah muda</option>
+    <option value="custom">Karakter kartun orisinal</option>
+  </select>
+  <p class="note">
+    Pilih karakter untuk membuat pola kertas 3D yang dapat dicetak.
+  </p>
 </div>
 <button class="primary" id="make">Buat Pola</button>
 <button class="secondary" id="save">Cetak / Simpan PDF</button>
@@ -572,18 +590,153 @@ statusText.textContent=t.success;
 return true;
 }
 
+function characterPattern() {
+  const en = document.getElementById('language').value === 'en';
+  const character = document.getElementById('characterName').value;
+
+  const designs = {
+    bunny: {
+      id: 'Kelinci',
+      en: 'Bunny',
+      color: '#f8c9dc',
+      ear: 'bunny'
+    },
+    cat: {
+      id: 'Kucing',
+      en: 'Cat',
+      color: '#f6d7a7',
+      ear: 'cat'
+    },
+    bear: {
+      id: 'Beruang',
+      en: 'Bear',
+      color: '#c99570',
+      ear: 'bear'
+    },
+    robot: {
+      id: 'Robot',
+      en: 'Robot',
+      color: '#9ddde8',
+      ear: 'robot'
+    },
+    doraemon: {
+      id: 'Robot kucing biru',
+      en: 'Blue robot cat',
+      color: '#69bdf2',
+      ear: 'cat'
+    },
+    teddy: {
+      id: 'Beruang merah muda',
+      en: 'Pink teddy bear',
+      color: '#f3a5bd',
+      ear: 'bear'
+    },
+    custom: {
+      id: 'Karakter kartun',
+      en: 'Original cartoon character',
+      color: '#c8b5f2',
+      ear: 'bear'
+    }
+  };
+
+  const d = designs[character] || designs.bunny;
+  const t = translations[en ? 'en' : 'id'];
+
+  const svg = pageBase(
+    t.envelopeTitle || (en ? '3D PAPER CHARACTER' : 'KARAKTER KERTAS 3D'),
+    en ? 'Cut, fold, glue and assemble' :
+         'Potong, lipat, rekatkan, dan rakit'
+  );
+
+  const addFace = (cx, cy) => {
+    svg.appendChild(svgEl('rect', {
+      x: cx - 33, y: cy - 43,
+      width: 66, height: 86,
+      rx: 8, fill: d.color,
+      stroke: '#333', 'stroke-width': 0.7
+    }));
+
+    if (d.ear === 'bunny') {
+      svg.appendChild(svgEl('ellipse', {
+        cx: cx - 15, cy: cy - 43,
+        rx: 7, ry: 20, fill: d.color,
+        stroke: '#333', 'stroke-width': 0.6
+      }));
+      svg.appendChild(svgEl('ellipse', {
+        cx: cx + 15, cy: cy - 43,
+        rx: 7, ry: 20, fill: d.color,
+        stroke: '#333', 'stroke-width': 0.6
+      }));
+    } else if (d.ear === 'cat' || d.ear === 'bear') {
+      svg.appendChild(svgEl('circle', {
+        cx: cx - 23, cy: cy - 38, r: 9,
+        fill: d.color, stroke: '#333', 'stroke-width': 0.6
+      }));
+      svg.appendChild(svgEl('circle', {
+        cx: cx + 23, cy: cy - 38, r: 9,
+        fill: d.color, stroke: '#333', 'stroke-width': 0.6
+      }));
+    }
+
+    if (character === 'robot' || character === 'doraemon') {
+      svg.appendChild(svgEl('circle', {
+        cx, cy: cy + 8, r: 20,
+        fill: '#fff', stroke: '#333', 'stroke-width': 0.6
+      }));
+    }
+
+    svg.appendChild(svgEl('circle', {
+      cx: cx - 12, cy: cy - 5, r: 3.5, fill: '#222'
+    }));
+    svg.appendChild(svgEl('circle', {
+      cx: cx + 12, cy: cy - 5, r: 3.5, fill: '#222'
+    }));
+    svg.appendChild(svgEl('path', {
+      d: `M ${cx-7} ${cy+9} Q ${cx} ${cy+17} ${cx+7} ${cy+9}`,
+      fill: 'none', stroke: '#333', 'stroke-width': 1.2
+    }));
+  };
+
+  addFace(55, 140);
+  addFace(125, 140);
+
+  // Dinding samping dan lidah perekat.
+  svg.appendChild(svgEl('rect', {
+    x: 88, y: 97, width: 4, height: 86,
+    fill: d.color, stroke: '#333', 'stroke-width': 0.6
+  }));
+
+  addText(
+    svg,
+    en ? d.en : d.id,
+    105, 205, 4, 'bold', '#243047'
+  );
+
+  addLegend(svg, t);
+  paper.replaceChildren(svg);
+  statusText.textContent = en
+    ? 'Character pattern created. Check the print preview before printing.'
+    : 'Pola karakter dibuat. Periksa pratinjau cetak sebelum mencetak.';
+
+  return true;
+}
 function generate(){
 const kind=document.getElementById('product').value;
 const landscape=kind==='squishy';
 document.body.classList.toggle('page-landscape',landscape);
 document.getElementById('dynamicPageStyle').textContent='@page{size:A4 '+(landscape?'landscape':'portrait')+';margin:0}';
-return kind==='cube'?cubePattern():landscape?squishyPattern():envelopePattern();
+if (kind === 'cube') return cubePattern();
+if (kind === 'squishy') return squishyPattern();
+if (kind === 'envelope') return envelopePattern();
+if (kind === 'character') return characterPattern();
 }
 function updateProduct(){
-const p=document.getElementById('product').value;
-document.getElementById('cubeOptions').hidden=p!=='cube';
-document.getElementById('squishyOptions').hidden=p!=='squishy';
-document.getElementById('envelopeOptions').hidden=p!=='envelope';
+  const p = document.getElementById('product').value;
+
+  document.getElementById('cubeOptions').hidden = p !== 'cube';
+  document.getElementById('squishyOptions').hidden = p !== 'squishy';
+  document.getElementById('envelopeOptions').hidden = p !== 'envelope';
+  document.getElementById('characterOptions').hidden = p !== 'character';
 }
 document.getElementById('language').addEventListener('change',()=>{applyLanguage();generate();});
 document.getElementById('product').addEventListener('change',()=>{updateProduct();generate();});
