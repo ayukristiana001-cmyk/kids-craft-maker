@@ -758,7 +758,8 @@ document.getElementById('save').addEventListener('click', () => {
 });
 applyLanguage();
 updateProduct();
-generate();
+paper.replaceChildren();
+statusText.textContent = 'Pilih jenis prakarya, lalu tekan Buat Pola.';
 </script>
 </body>
 </html>
