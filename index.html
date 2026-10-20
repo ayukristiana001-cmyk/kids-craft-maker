@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -591,11 +590,7 @@ document.getElementById('product').addEventListener('change',()=>{updateProduct(
 document.getElementById('make').addEventListener('click',generate);
 document.getElementById('save').addEventListener('click',()=>{
 if(generate()){
-if(document.getElementById('product').value==='squishy'){
-alert(document.getElementById('language').value==='en'?
-'For DIY Squishy Paper, choose A4 paper, Landscape orientation, and 100% scale in the print settings.':
-'Untuk DIY Squishy Paper, pilih kertas A4, orientasi Lanskap, dan skala 100% pada pengaturan cetak.');
-}
+// Pengingat cetak dihilangkan agar langsung membuka jendela cetak.
 window.print();
 }
 });
