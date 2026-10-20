@@ -92,8 +92,7 @@ function squishyPattern(){
   if(!Number.isFinite(w)||w<60||w>100||!Number.isFinite(h)||h<70||h>120||!Number.isFinite(d)||d<8||d>16){
     alert(en?'Use width 60–100 mm, height 70–120 mm, and side depth 8–16 mm.':'Gunakan lebar 60–100 mm, tinggi 70–120 mm, dan tebal 8–16 mm.');return false;
   }
-  const names={cake:en?'STRAWBERRY CAKE':'KUE STROBERI',bear:en?'STRAWBERRY
-  BEAR':'BERUANG STROBERI',cat:en?'CAT DONUT':'KUCING DONAT',donut:en?'SWEET DONUT':'DONAT MANIS'};
+  const names={cake:en?'STRAWBERRY CAKE':'KUE STROBERI',bear:en?'STRAWBERRY BEAR':'BERUANG STROBERI',cat:en?'CAT DONUT':'KUCING DONAT',donut:en?'SWEET DONUT':'DONAT MANIS'};
   const title=(en?'DIY PAPER SQUISHY · ':'DIY SQUISHY PAPER · ')+names[kind];
   const svg=pageBase(title,`${t.finished}: ${w} × ${h} × ${d} mm`,true);
   document.body.classList.add('page-landscape');
