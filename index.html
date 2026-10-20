@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Kids Craft Maker</title>
+<title>Kids Craft Maker v4</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#f3f7fb;color:#243047;font-family:Arial,sans-serif}
@@ -26,9 +26,6 @@ button{border:0;border-radius:10px;padding:13px 16px;font-weight:bold;cursor:poi
 .status{font-size:14px;line-height:1.6}
 footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
 @media screen{.print-area{display:none!important}}
-@page portraitPage{size:A4 portrait;margin:0}
-@page landscapePage{size:A4 landscape;margin:0}
-body{page:portraitPage}body.page-landscape{page:landscapePage}
 @media print{
   body{background:#fff;margin:0}
   header,.controls,.preview-title,footer,.note-screen,.status{display:none!important}
@@ -38,10 +35,11 @@ body{page:portraitPage}body.page-landscape{page:landscapePage}
   .preview{padding:0;margin:0;background:#fff;overflow:visible;border-radius:0}
   #paper{width:210mm;max-width:none;height:297mm;margin:0;box-shadow:none}
   #paper svg{width:210mm;height:297mm}
-  body.page-landscape #paper{width:297mm;height:210mm}
-  body.page-landscape #paper svg{width:297mm;height:210mm}
+  body.page-landscape #paper{width:297mm!important;max-width:none!important;height:210mm!important;margin:0!important;box-shadow:none!important}
+  body.page-landscape #paper svg{display:block;width:297mm!important;height:210mm!important;max-width:none!important}
 }
 </style>
+<style id="dynamicPageStyle">@page{size:A4 portrait;margin:0}</style>
 </head>
 <body>
 <header><h1>✂️ Kids Craft Maker</h1><p id="tagline">Rancang pola prakarya, cetak, lipat, dan rakit!</p></header>
@@ -75,7 +73,8 @@ body{page:portraitPage}body.page-landscape{page:landscapePage}
 <section class="panel print-area" aria-label="Print-ready craft page"><h2 class="preview-title">Pratinjau Pola</h2><div class="preview"><div id="paper"></div></div><p class="status" id="status" aria-live="polite">Pola siap dibuat.</p><p class="note note-screen">Garis utuh = potong. Garis putus-putus = lipat.</p></section>
 </main><footer>Kids Craft Maker · Pola prakarya anak</footer>
 <script>
-const NS='http://www.w3.org/2000/svg';const paper=document.getElementById('paper');const statusText=document.getElementById('status');
+const NS='http://www.w3.org/2000/svg';const
+paper=document.getElementById('paper');const statusText=document.getElementById('status');
 const translations={id:{tagline:'Rancang pola prakarya, cetak, lipat, dan rakit!',settings:'Pengaturan Prakarya',language:'Pilih bahasa / Choose language',product:'Jenis prakarya',cube:'Pola Kubus',squishy:'DIY Squishy Paper',envelope:'Amplop Kreatif',side:'Panjang sisi kubus (cm)',cubeNote:'Ukuran sisi 2–4,2 cm. Pola disusun untuk kertas A4 vertikal.',tabs:'Lebar lidah perekat (mm)',squishyName:'Nama desain',cake:'Kue Stroberi',bear:'Beruang Lucu',cat:'Kucing Imut',donut:'Donat Manis',width:'Lebar hasil jadi (mm)',height:'Tinggi hasil jadi (mm)',depth:'Tebal/dinding samping (mm)',squishyNote:'Pola A4 lanskap lengkap dengan gambar hasil jadi, dua panel, dinding samping, tab lem, legenda, dan petunjuk.',envelopeSize:'Ukuran amplop',small:'Kecil',medium:'Sedang',large:'Besar',theme:'Tema hiasan',heart:'Hati',star:'Bintang',flower:'Bunga',envelopeNote:'Pola amplop dengan garis potong dan garis lipat.',make:'Buat Pola',save:'Cetak / Simpan PDF',saveNote:'Saat jendela cetak muncul, pilih Simpan sebagai PDF, kertas A4, skala 100%, dan matikan header/footer browser jika tersedia.',cubeTitle:'POLA KUBUS',cut:'Garis utuh: potong | Garis putus-putus: lipat',glue:'Oleskan lem pada lidah perekat, lalu satukan sisi kubus.',sideText:'Panjang setiap sisi',success:'Pola berhasil dibuat.',finished:'Ukuran setelah dirakit',tips:'Tips',cutTip:'Potong mengikuti garis utuh.',foldTip:'Lipat mengikuti garis putus-putus.',glueTip:'Oleskan lem pada lidah perekat.',fillTip:'Isi dengan kapas atau busa ringan.',enjoy:'Selamat berkreasi!',cutLine:'GARIS POTONG',foldLine:'GARIS LIPAT',glueTab:'LIDAH PEREKAT',widthText:'Lebar',heightText:'Tinggi',thickness:'Tebal',assemble:'PETUNJUK PERAKITAN',envelopeTitle:'POLA AMPLOP KREATIF',foldEnvelope:'Lipat pada garis putus-putus, lalu rekatkan sisi samping.',themeLabel:'Tema'},en:{tagline:'Design your craft, print, fold, and assemble!',settings:'Craft Settings',language:'Choose language / Pilih bahasa',product:'Craft type',cube:'Cube Net',squishy:'DIY Paper Squishy',envelope:'Creative Envelope',side:'Cube side length (cm)',cubeNote:'Side length 2–4.2 cm. Designed for portrait A4 paper.',tabs:'Glue tab width (mm)',squishyName:'Design',cake:'Strawberry Cake',bear:'Cute Bear',cat:'Cute Cat',donut:'Sweet Donut',width:'Finished width (mm)',height:'Finished height (mm)',depth:'Thickness/side wall (mm)',squishyNote:'Landscape A4 sheet with a finished preview, two face panels, side wall, glue tabs, legend, and instructions.',envelopeSize:'Envelope size',small:'Small',medium:'Medium',large:'Large',theme:'Decoration theme',heart:'Heart',star:'Star',flower:'Flower',envelopeNote:'Envelope template with cut and fold lines.',make:'Generate Template',save:'Print / Save PDF',saveNote:'In the print window, choose Save as PDF, A4 paper, 100% scale, and turn off browser headers/footers if available.',cubeTitle:'CUBE NET',cut:'Solid line: cut | Dashed line: fold',glue:'Apply glue to the tabs, then join the cube sides.',sideText:'Each side',success:'Template generated.',finished:'Finished size',tips:'Tips',cutTip:'Cut along the solid lines.',foldTip:'Fold along the dashed lines.',glueTip:'Apply glue to the tabs.',fillTip:'Fill with cotton or soft foam.',enjoy:'Happy crafting!',cutLine:'CUT LINE',foldLine:'FOLD LINE',glueTab:'GLUE TAB',widthText:'Width',heightText:'Height',thickness:'Thickness',assemble:'ASSEMBLY INSTRUCTIONS',envelopeTitle:'CREATIVE ENVELOPE TEMPLATE',foldEnvelope:'Fold along dashed lines, then glue the side tabs.',themeLabel:'Theme'}};
 function T(){return translations[document.getElementById('language').value]}
 function applyLanguage(){const t=T(),en=document.getElementById('language').value==='en';document.documentElement.lang=en?'en':'id';const ids={tagline:'tagline',settingsTitle:'settings',languageLabel:'language',productLabel:'product',sideLabel:'side',cubeNote:'cubeNote',tabsLabel:'tabs',squishyNameLabel:'squishyName',squishyWidthLabel:'width',squishyHeightLabel:'height',squishyDepthLabel:'depth',squishyNote:'squishyNote',envelopeSizeLabel:'envelopeSize',envelopeThemeLabel:'theme',envelopeNote:'envelopeNote',make:'make',save:'save',saveNote:'saveNote'};for(const [id,key] of Object.entries(ids))document.getElementById(id).textContent=t[key];const product=document.getElementById('product');product.options[0].text=t.cube;product.options[1].text=t.squishy;product.options[2].text=t.envelope;const sn=document.getElementById('squishyName');sn.options[0].text=t.cake;sn.options[1].text=t.bear;sn.options[2].text=t.cat;sn.options[3].text=t.donut;const es=document.getElementById('envelopeSize');es.options[0].text=t.small;es.options[1].text=t.medium;es.options[2].text=t.large;const et=document.getElementById('envelopeTheme');et.options[0].text=t.heart;et.options[1].text=t.star;et.options[2].text=t.flower;}
@@ -93,7 +92,8 @@ function squishyPattern(){
   if(!Number.isFinite(w)||w<60||w>100||!Number.isFinite(h)||h<70||h>120||!Number.isFinite(d)||d<8||d>16){
     alert(en?'Use width 60–100 mm, height 70–120 mm, and side depth 8–16 mm.':'Gunakan lebar 60–100 mm, tinggi 70–120 mm, dan tebal 8–16 mm.');return false;
   }
-  const names={cake:en?'STRAWBERRY CAKE':'KUE STROBERI',bear:en?'STRAWBERRY BEAR':'BERUANG STROBERI',cat:en?'CAT DONUT':'KUCING DONAT',donut:en?'SWEET DONUT':'DONAT MANIS'};
+  const names={cake:en?'STRAWBERRY CAKE':'KUE STROBERI',bear:en?'STRAWBERRY
+  BEAR':'BERUANG STROBERI',cat:en?'CAT DONUT':'KUCING DONAT',donut:en?'SWEET DONUT':'DONAT MANIS'};
   const title=(en?'DIY PAPER SQUISHY · ':'DIY SQUISHY PAPER · ')+names[kind];
   const svg=pageBase(title,`${t.finished}: ${w} × ${h} × ${d} mm`,true);
   document.body.classList.add('page-landscape');
@@ -175,7 +175,7 @@ function squishyPattern(){
       for(let i=0;i<8;i++){const a=i*Math.PI/4;svg.appendChild(svgEl('ellipse',{cx:dcx+Math.cos(a)*ro*.68,cy:dcy+Math.sin(a)*ro*.68,rx:ww*.014,ry:hh*.009,transform:`rotate(${i*45} ${dcx+Math.cos(a)*ro*.68} ${dcy+Math.sin(a)*ro*.68})`,fill:['#7bb8e6','#f4df6e','#8ecb8f'][i%3],stroke:'none'}))}
       eye(dcx-ro*.34,dcy+ro*.26,ww*.035);eye(dcx+ro*.34,dcy+ro*.26,ww*.035);svg.appendChild(svgEl('path',{d:`M ${dcx-ww*.035} ${dcy+ro*.50} Q ${dcx} ${dcy+ro*.61} ${dcx+ww*.035} ${dcy+ro*.50}`,fill:'none',stroke:'#633d2e','stroke-width':.8}));
     }
-  }
+        }
   drawFace(faceX,faceY,w,h,false);drawFace(backX,faceY,w,h,true);
   for(let yy=faceY+8;yy<faceY+h-4;yy+=10){svg.appendChild(svgEl('circle',{cx:faceX+w+d/2,cy:yy,r:1.1,fill:'#fff3fa',stroke:'none'}));}
   // Solid cut contour around outer edges and the glue tabs.
@@ -234,9 +234,9 @@ function squishyPattern(){
   paper.replaceChildren(svg);statusText.textContent=`${t.success} ${w} × ${h} × ${d} mm.`;return true;
 }
 function envelopePattern(){const t=T(),en=document.getElementById('language').value==='en',size=document.getElementById('envelopeSize').value,theme=document.getElementById('envelopeTheme').value;const dims=size==='small'?[90,60]:size==='large'?[150,100]:[120,80],w=dims[0],h=dims[1],cx=105,cy=143,svg=pageBase(t.envelopeTitle,`${t.widthText}: ${w} mm · ${t.heightText}: ${h} mm`),col=theme==='heart'?'#f5c6d6':theme==='star'?'#f6dc8a':'#cdebd4';svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy-h/2} ${cx+w/2},${cy-h/2} ${cx+w/2+18},${cy} ${cx+w/2},${cy+h/2} ${cx-w/2},${cy+h/2} ${cx-w/2-18},${cy}`,fill:'#fff',stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy-h/2} ${cx},${cy-h/2-35} ${cx+w/2},${cy-h/2}`,fill:col,stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy+h/2} ${cx},${cy+h/2+28} ${cx+w/2},${cy+h/2}`,fill:'#fff',stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy-h/2,x2:cx+w/2,y2:cy-h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy+h/2,x2:cx+w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy-h/2,x2:cx-w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx+w/2,y1:cy-h/2,x2:cx+w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));addText(svg,theme==='heart'?'♥':theme==='star'?'★':'✿',cx,cy+7,18,'bold',theme==='heart'?'#d34f80':theme==='star'?'#bd8a18':'#4d9b69');addText(svg,t.foldEnvelope,105,228,3.6);addLegend(svg,t);paper.replaceChildren(svg);statusText.textContent=t.success;return true}
-function generate(){const kind=document.getElementById('product').value;document.body.classList.toggle('page-landscape',kind==='squishy');return kind==='cube'?cubePattern():kind==='squishy'?squishyPattern():envelopePattern()}
+function generate(){const kind=document.getElementById('product').value;const landscape=kind==='squishy';document.body.classList.toggle('page-landscape',landscape);document.getElementById('dynamicPageStyle').textContent='@page{size:A4 '+(landscape?'landscape':'portrait')+';margin:0}';return kind==='cube'?cubePattern():landscape?squishyPattern():envelopePattern()}
 function updateProduct(){const p=document.getElementById('product').value;document.getElementById('cubeOptions').hidden=p!=='cube';document.getElementById('squishyOptions').hidden=p!=='squishy';document.getElementById('envelopeOptions').hidden=p!=='envelope'}
-document.getElementById('language').addEventListener('change',()=>{applyLanguage();generate()});document.getElementById('product').addEventListener('change',()=>{updateProduct();generate()});document.getElementById('make').addEventListener('click',generate);document.getElementById('save').addEventListener('click',()=>{if(generate())window.print()});
+document.getElementById('language').addEventListener('change',()=>{applyLanguage();generate()});document.getElementById('product').addEventListener('change',()=>{updateProduct();generate()});document.getElementById('make').addEventListener('click',generate);document.getElementById('save').addEventListener('click',()=>{if(generate()){if(document.getElementById('product').value==='squishy'){alert(document.getElementById('language').value==='en'?'For DIY Squishy Paper, choose A4 paper, Landscape orientation, and 100% scale in the print settings.':'Untuk DIY Squishy Paper, pilih kertas A4, orientasi Lanskap, dan skala 100% pada pengaturan cetak.')}window.print()}});
 applyLanguage();updateProduct();generate();
 </script>
 </body>
