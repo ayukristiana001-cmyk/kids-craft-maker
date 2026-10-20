@@ -5,347 +5,61 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kids Craft Maker</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f3f7fb;color:#243047;font-family:Arial,sans-serif}
-header{background:#087e8b;color:white;padding:22px 16px;text-align:center}
-header h1{margin:0 0 8px;font-size:27px}
-header p{margin:0;font-size:14px}
-main{max-width:850px;margin:20px auto;padding:0 14px}
-.panel{background:white;padding:18px;border-radius:16px;margin-bottom:16px;box-shadow:0 3px 14px #17255410}
-h2{font-size:19px;margin:0 0 14px}
-label{display:block;font-weight:bold;margin-bottom:8px}
-input,select,button{font:inherit}
-input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:white}
-button{border:0;border-radius:10px;padding:13px 16px;font-weight:bold;cursor:pointer}
-.primary{background:#087e8b;color:white;width:100%;margin-top:14px}
-.secondary{background:#e0f2fe;color:#075985;width:100%;margin-top:9px}
-.note{font-size:13px;color:#64748b;line-height:1.6}
-.preview{overflow:auto;background:#e8edf4;padding:12px;border-radius:10px;text-align:center}
-#paper{background:white;width:100%;max-width:440px;margin:auto;box-shadow:0 2px 10px #0002}
-#paper svg{display:block;width:100%;height:auto}
- @media screen {
-  .print-area {
-    display: none !important;
-  }
- } 
-/* Tampilan garis pola prakarya */
-#paper svg polygon {
-  stroke: #111;
-  stroke-width: 0.45;
-  stroke-linejoin: round;
-}
-#paper svg rect {
-  stroke: #111;
-}
-
-#paper svg line {
-  stroke: #555;
-}
-.status{font-size:14px;line-height:1.6}
-footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
-@media print{
- @page{size:A4 portrait;margin:0}
- body{background:white}
- 
-header,.controls,.preview-title,footer,.note-screen,.status{
-  display:none!important
-}
- main{max-width:none;margin:0;padding:0}
- .panel{padding:0;margin:0;border-radius:0;box-shadow:none}
- .preview{padding:0;margin:0;background:white;overflow:visible}
- #paper{width:210mm;max-width:none;height:297mm;margin:0;box-shadow:none}
- #paper svg{width:210mm;height:297mm}
-}
+*{box-sizing:border-box}body{margin:0;background:#f3f7fb;color:#243047;font-family:Arial,sans-serif}header{background:#087e8b;color:white;padding:22px 16px;text-align:center}header h1{margin:0 0 8px;font-size:27px}header p{margin:0;font-size:14px}main{max-width:850px;margin:20px auto;padding:0 14px}.panel{background:white;padding:18px;border-radius:16px;margin-bottom:16px;box-shadow:0 3px 14px #17255410}h2{font-size:19px;margin:0 0 14px}label{display:block;font-weight:bold;margin:12px 0 8px}input,select,button{font:inherit}input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:white}button{border:0;border-radius:10px;padding:13px 16px;font-weight:bold;cursor:pointer}.primary{background:#087e8b;color:white;width:100%;margin-top:14px}.secondary{background:#e0f2fe;color:#075985;width:100%;margin-top:9px}.note{font-size:13px;color:#64748b;line-height:1.6}.preview{overflow:auto;background:#e8edf4;padding:12px;border-radius:10px;text-align:center}#paper{background:white;width:100%;max-width:440px;margin:auto;box-shadow:0 2px 10px #0002}#paper svg{display:block;width:100%;height:auto}#paper svg polygon{stroke:#111;stroke-width:.45;stroke-linejoin:round}#paper svg rect{stroke:#111}#paper svg line{stroke:#555}.status{font-size:14px;line-height:1.6}footer{text-align:center;color:#64748b;font-size:12px;padding:15px}@media screen{.print-area{display:none!important}}@media print{@page{size:A4 portrait;margin:0}body{background:white}header,.controls,.preview-title,footer,.note-screen,.status{display:none!important}main{max-width:none;margin:0;padding:0}.panel{padding:0;margin:0;border-radius:0;box-shadow:none}.preview{padding:0;margin:0;background:white;overflow:visible}#paper{width:210mm;max-width:none;height:297mm;margin:0;box-shadow:none}#paper svg{width:210mm;height:297mm}}
 </style>
 </head>
 <body>
-<header>
-  <h1>✂️ Kids Craft Maker</h1>
-  <p>Rancang pola prakarya, cetak, lipat, dan rakit!</p>
-</header>
-
+<header><h1>✂️ Kids Craft Maker</h1><p id="tagline">Rancang pola prakarya, cetak, lipat, dan rakit!</p></header>
 <main>
-  <section class="panel controls">
-    <h2>Generator Pola Kubus</h2>
-    <label for="side">Panjang sisi kubus (cm)</label>
-    <input id="side" type="number" min="2" max="4.2"
-      step="0.1" value="3">
-    <p class="note">Ukuran sisi 2–4,2 cm. Pola disusun untuk kertas A4 vertikal.</p>
-
-    <label for="tabs">Lebar lidah perekat (mm)</label>
-    <input id="tabs" type="number" min="4" max="10"
-      step="1" value="6">
-
-    <button class="primary" id="make">Buat Pola Kubus</button>
-    <button class="secondary" id="save">Cetak / Simpan PDF</button>
-    <p class="note">
-      Saat jendela cetak muncul, pilih "Simpan sebagai PDF",
-      ukuran kertas A4, skala 100%, dan matikan header serta footer
-      browser jika tersedia.
-    </p>
-  </section>
-
-
-  <section class="panel print-area">
-    <h2 class="preview-title">Pratinjau Pola</h2>
-    <div class="preview">
-      <div id="paper"></div>
-    </div>
-    <p class="status" id="status" aria-live="polite">
-      Pola siap dibuat.
-    </p>
-    <p class="note note-screen">
-      Garis hitam utuh = potong. Garis putus-putus = lipat.
-      Lidah perekat digunakan untuk menyambungkan sisi kubus.
-    </p>
-  </section>
-
-  <section class="panel controls">
-    <h2>Karakter Karton 3D</h2>
-    <label for="character">Pilih karakter</label>
-    <select id="character">
-      <option value="rabbit">Kelinci</option>
-      <option value="cat">Kucing</option>
-      <option value="robot">Robot</option>
-    </select>
-    <p class="note">
-      Pilih karakter untuk membuat pola prakarya 3D.
-    </p>
-    <button class="primary" id="characterButton" type="button">
-      Buat Pola Karakter
-    </button>
-  </section>
-</main>
-
-
-<footer>Kids Craft Maker · Pola prakarya anak</footer>
-
+<section class="panel controls">
+<h2 id="settingsTitle">Pengaturan Prakarya</h2>
+<label for="language" id="languageLabel">Pilih bahasa / Choose language</label>
+<select id="language"><option value="id">Bahasa Indonesia</option><option value="en">English</option></select>
+<label for="product" id="productLabel">Jenis prakarya</label>
+<select id="product"><option value="cube">Pola Kubus</option><option value="squishy">DIY Squishy Paper</option><option value="envelope">Amplop Kreatif</option></select>
+<div id="cubeOptions">
+<label for="side" id="sideLabel">Panjang sisi kubus (cm)</label><input id="side" type="number" min="2" max="4.2" step="0.1" value="3">
+<p class="note" id="cubeNote">Ukuran sisi 2–4,2 cm. Pola disusun untuk kertas A4 vertikal.</p>
+<label for="tabs" id="tabsLabel">Lebar lidah perekat (mm)</label><input id="tabs" type="number" min="4" max="10" step="1" value="6">
+</div>
+<div id="squishyOptions" hidden>
+<label for="squishyName" id="squishyNameLabel">Nama desain</label><select id="squishyName"><option value="cake">Kue Stroberi</option><option value="bear">Beruang Lucu</option><option value="cat">Kucing Imut</option><option value="donut">Donat Manis</option></select>
+<label for="squishyWidth" id="squishyWidthLabel">Lebar hasil jadi (mm)</label><input id="squishyWidth" type="number" min="60" max="120" value="100">
+<label for="squishyHeight" id="squishyHeightLabel">Tinggi hasil jadi (mm)</label><input id="squishyHeight" type="number" min="70" max="150" value="120">
+<label for="squishyDepth" id="squishyDepthLabel">Tebal/dinding samping (mm)</label><input id="squishyDepth" type="number" min="8" max="25" value="12">
+<p class="note" id="squishyNote">Pola squishy bergaya kawaii orisinal, bukan karakter berlisensi.</p>
+</div>
+<div id="envelopeOptions" hidden>
+<label for="envelopeSize" id="envelopeSizeLabel">Ukuran amplop</label><select id="envelopeSize"><option value="small">Kecil</option><option value="medium" selected>Sedang</option><option value="large">Besar</option></select>
+<label for="envelopeTheme" id="envelopeThemeLabel">Tema hiasan</label><select id="envelopeTheme"><option value="heart">Hati</option><option value="star">Bintang</option><option value="flower">Bunga</option></select>
+<p class="note" id="envelopeNote">Pola amplop dengan garis potong dan garis lipat.</p>
+</div>
+<button class="primary" id="make">Buat Pola</button><button class="secondary" id="save">Cetak / Simpan PDF</button>
+<p class="note" id="saveNote">Saat jendela cetak muncul, pilih Simpan sebagai PDF, kertas A4, skala 100%, dan matikan header/footer browser jika tersedia.</p>
+</section>
+<section class="panel print-area"><h2 class="preview-title">Pratinjau Pola</h2><div class="preview"><div id="paper"></div></div><p class="status" id="status" aria-live="polite">Pola siap dibuat.</p><p class="note note-screen">Garis utuh = potong. Garis putus-putus = lipat.</p></section>
+</main><footer>Kids Craft Maker · Pola prakarya anak</footer>
 <script>
-const NS = "http://www.w3.org/2000/svg";
-const paper = document.getElementById("paper");
-const statusText = document.getElementById("status");
-
-function svgEl(tag, attrs = {}) {
-  const el = document.createElementNS(NS, tag);
-  for (const [key, value] of Object.entries(attrs)) {
-    el.setAttribute(key, value);
-  }
-  return el;
-}
-
-function createPattern() {
-  const sideCm = Number(document.getElementById("side").value);
-  const tabMm = Number(document.getElementById("tabs").value);
-
-  if (!Number.isFinite(sideCm) || sideCm < 2 || sideCm > 4.2) {
-    alert("Masukkan panjang sisi antara 2 dan 4,2 cm.");
-    return false;
-  }
-
-  if (!Number.isFinite(tabMm) || tabMm < 4 || tabMm > 10) {
-    alert("Masukkan lebar perekat antara 4 dan 10 mm.");
-    return false;
-  }
-
-  const s = sideCm * 10;
-  const t = tabMm;
-
-  // Empat bidang berjajar, satu di atas dan satu di bawah.
-  const faces = [
-    [0, 1], [1, 1], [2, 1], [3, 1],
-    [1, 0], [1, 2]
-  ];
-  const occupied = new Set(faces.map(([x,y]) => `${x},${y}`));
-
-  // Ukuran halaman fisik A4 dalam milimeter.
-  const pageW = 210, pageH = 297;
-  const netW = 4 * s;
-  const netH = 3 * s;
-  const offsetX = (pageW - netW) / 2;
-  const offsetY = (pageH - netH) / 2;
-
-  const svg = svgEl("svg", {
-    xmlns: NS,
-    viewBox: `0 0 ${pageW} ${pageH}`,
-    width: `${pageW}mm`,
-    height: `${pageH}mm`,
-    role: "img",
-    "aria-label": "Pola kubus untuk dicetak"
-  });
-
-  svg.appendChild(svgEl("rect", {
-    x: 0, y: 0, width: pageW, height: pageH, fill: "white"
-  }));
-
-  const title = svgEl("text", {
-    x: pageW/2, y: 24, "text-anchor": "middle",
-    "font-size": 5, "font-family": "Arial", "font-weight": "bold",
-    fill: "#111"
-  });
-  title.textContent = "POLA KUBUS";
-  svg.appendChild(title);
- 
-const instruction = svgEl("text", {
-  x: pageW / 2,
-  y: 49,
-  "text-anchor": "middle",
-  "font-size": 3,
-  "font-family": "Arial",
-  fill: "#333"
-});
-instruction.textContent =
-  "Garis utuh: potong | Garis putus-putus: lipat";
-svg.appendChild(instruction);
-
-const instruction2 = svgEl("text", {
-  x: pageW / 2,
-  y: 54,
-  "text-anchor": "middle",
-  "font-size": 3,
-  "font-family": "Arial",
-  fill: "#333"
-});
-instruction2.textContent =
-  "Oleskan lem pada lidah perekat, lalu satukan sisi kubus.";
-svg.appendChild(instruction2);
-
-  const subtitle = svgEl("text", {
-    x: pageW/2, y: 31, "text-anchor": "middle",
-    "font-size": 3.4, "font-family": "Arial", fill: "#333"
-  });
-  subtitle.textContent = `Panjang setiap sisi: ${sideCm} cm`;
-  svg.appendChild(subtitle);
-
-  const group = svgEl("g", {
-    transform: `translate(${offsetX},${offsetY})`
-  });
-  svg.appendChild(group);
-
-  // Gambar bidang dan garis lipatnya.
-  for (const [x,y] of faces) {
-    group.appendChild(svgEl("rect", {
-      x: x*s, y: y*s, width: s, height: s,
-      fill: "white", stroke: "#111", "stroke-width": 0.35
-    }));
-  }
-
-  // Lidah perekat hanya ditempatkan di sisi luar pola.
-  // Sudut dipotong miring agar tab tidak bertumpuk.
-  const edges = [
-    {dx:0,dy:-1, edge:"top"},
-    {dx:1,dy:0, edge:"right"},
-    {dx:0,dy:1, edge:"bottom"},
-    {dx:-1,dy:0, edge:"left"}
-  ];
-
-  for (const [x,y] of faces) {
-    for (const e of edges) {
-      if (occupied.has(`${x+e.dx},${y+e.dy}`)) continue;
-
-      let points;
-      const inset = Math.min(3, s*0.15);
-      const depth = Math.min(t, s*0.25);
-
-      if (e.edge === "top") {
-        points = [
-          [x*s+inset,y*s],
-          [x*s+s-inset,y*s],
-          [x*s+s-inset-depth,y*s-depth],
-          [x*s+inset+depth,y*s-depth]
-        ];
-      } else if (e.edge === "bottom") {
-        points = [
-          [x*s+inset,(y+1)*s],
-          [x*s+s-inset,(y+1)*s],
-          [x*s+s-inset-depth,(y+1)*s+depth],
-          [x*s+inset+depth,(y+1)*s+depth]
-        ];
-      } else if (e.edge === "left") {
-        points = [
-          [x*s,y*s+inset],
-          [x*s,(y+1)*s-inset],
-          [x*s-depth,(y+1)*s-inset-depth],
-          [x*s-depth,y*s+inset+depth]
-        ];
-      } else {
-        points = [
-          [(x+1)*s,y*s+inset],
-          [(x+1)*s,(y+1)*s-inset],
-          [(x+1)*s+depth,(y+1)*s-inset-depth],
-          [(x+1)*s+depth,y*s+inset+depth]
-        ];
-      }
-
-      group.appendChild(svgEl("polygon", {
-        points: points.map(p => p.join(",")).join(" "),
-        fill: "white", stroke: "#111", "stroke-width": 0.35
-      }));
-
-      // Garis lipat pada pangkal lidah perekat.
-      let x1,y1,x2,y2;
-      if (e.edge === "top") {
-        x1=x*s+inset; x2=(x+1)*s-inset; y1=y2=y*s;
-      } else if (e.edge === "bottom") {
-        x1=x*s+inset; x2=(x+1)*s-inset; y1=y2=(y+1)*s;
-      } else if (e.edge === "left") {
-        x1=x2=x*s; y1=y*s+inset; y2=(y+1)*s-inset;
-      } else {
-        x1=x2=(x+1)*s; y1=y*s+inset; y2=(y+1)*s-inset;
-      }
-
-      group.appendChild(svgEl("line", {
-        x1,y1,x2,y2, stroke:"#555",
-        "stroke-width":0.3, "stroke-dasharray":"1.5 1"
-      }));
-    }
-  }
-
-  // Garis lipat antarbidang.
-  for (const [x,y] of faces) {
-    for (const e of [{dx:1,dy:0},{dx:0,dy:1}]) {
-      if (!occupied.has(`${x+e.dx},${y+e.dy}`)) continue;
-
-      let x1,y1,x2,y2;
-      if (e.dx === 1) {
-        x1=x2=(x+1)*s; y1=y*s; y2=(y+1)*s;
-      } else {
-        x1=x*s; x2=(x+1)*s; y1=y2=(y+1)*s;
-      }
-
-      
-group.appendChild(svgEl("line", {
-  x1, y1, x2, y2,
-  stroke: "#555",
-  "stroke-width": 0.5,
-  "stroke-dasharray": "2 1.5",
-  "stroke-linecap": "butt"
-}));
-
-    }
-  }
-
-  paper.replaceChildren(svg);
-  statusText.textContent =
-    `Pola berhasil dibuat. Sisi ${sideCm} cm, perekat ${tabMm} mm, kertas A4.`;
-  return true;
-}
-
-document.getElementById("make").addEventListener("click", createPattern);
-
-document.getElementById("save").addEventListener("click", () => {
-  if (createPattern()) window.print();
-});
-
-createPattern();
- 
-document.getElementById("characterButton").addEventListener("click", () => {
-  const character = document.getElementById("character").value;
-  alert(
-    "Karakter " + character +
-    " dipilih. Generator pola karakter akan dibuat pada tahap berikutnya."
-  );
-});
-
+const NS='http://www.w3.org/2000/svg';const paper=document.getElementById('paper');const statusText=document.getElementById('status');
+const translations={id:{tagline:'Rancang pola prakarya, cetak, lipat, dan rakit!',settings:'Pengaturan Prakarya',language:'Pilih bahasa / Choose language',product:'Jenis prakarya',cube:'Pola Kubus',squishy:'DIY Squishy Paper',envelope:'Amplop Kreatif',side:'Panjang sisi kubus (cm)',cubeNote:'Ukuran sisi 2–4,2 cm. Pola disusun untuk kertas A4 vertikal.',tabs:'Lebar lidah perekat (mm)',squishyName:'Nama desain',cake:'Kue Stroberi',bear:'Beruang Lucu',cat:'Kucing Imut',donut:'Donat Manis',width:'Lebar hasil jadi (mm)',height:'Tinggi hasil jadi (mm)',depth:'Tebal/dinding samping (mm)',squishyNote:'Pola squishy bergaya kawaii orisinal, bukan karakter berlisensi.',envelopeSize:'Ukuran amplop',small:'Kecil',medium:'Sedang',large:'Besar',theme:'Tema hiasan',heart:'Hati',star:'Bintang',flower:'Bunga',envelopeNote:'Pola amplop dengan garis potong dan garis lipat.',make:'Buat Pola',save:'Cetak / Simpan PDF',saveNote:'Saat jendela cetak muncul, pilih Simpan sebagai PDF, kertas A4, skala 100%, dan matikan header/footer browser jika tersedia.',cubeTitle:'POLA KUBUS',cut:'Garis utuh: potong | Garis putus-putus: lipat',glue:'Oleskan lem pada lidah perekat, lalu satukan sisi kubus.',sideText:'Panjang setiap sisi',success:'Pola berhasil dibuat.',finished:'Ukuran setelah dirakit',tips:'Tips',cutTip:'Potong mengikuti garis utuh.',foldTip:'Lipat mengikuti garis putus-putus.',glueTip:'Oleskan lem pada lidah perekat.',fillTip:'Isi dengan kapas atau busa ringan.',enjoy:'Selamat berkreasi!',cutLine:'GARIS POTONG',foldLine:'GARIS LIPAT',glueTab:'LIDAH PEREKAT',widthText:'Lebar',heightText:'Tinggi',thickness:'Tebal',assemble:'PETUNJUK PERAKITAN',envelopeTitle:'POLA AMPLOP KREATIF',foldEnvelope:'Lipat pada garis putus-putus, lalu rekatkan sisi samping.',themeLabel:'Tema'},en:{tagline:'Design your craft, print, fold, and assemble!',settings:'Craft Settings',language:'Choose language / Pilih bahasa',product:'Craft type',cube:'Cube Net',squishy:'DIY Paper Squishy',envelope:'Creative Envelope',side:'Cube side length (cm)',cubeNote:'Side length 2–4.2 cm. Designed for portrait A4 paper.',tabs:'Glue tab width (mm)',squishyName:'Design',cake:'Strawberry Cake',bear:'Cute Bear',cat:'Cute Cat',donut:'Sweet Donut',width:'Finished width (mm)',height:'Finished height (mm)',depth:'Thickness/side wall (mm)',squishyNote:'Original kawaii-style squishy template, not a licensed character.',envelopeSize:'Envelope size',small:'Small',medium:'Medium',large:'Large',theme:'Decoration theme',heart:'Heart',star:'Star',flower:'Flower',envelopeNote:'Envelope template with cut and fold lines.',make:'Generate Template',save:'Print / Save PDF',saveNote:'In the print window, choose Save as PDF, A4 paper, 100% scale, and turn off browser headers/footers if available.',cubeTitle:'CUBE NET',cut:'Solid line: cut | Dashed line: fold',glue:'Apply glue to the tabs, then join the cube sides.',sideText:'Each side',success:'Template generated.',finished:'Finished size',tips:'Tips',cutTip:'Cut along the solid lines.',foldTip:'Fold along the dashed lines.',glueTip:'Apply glue to the tabs.',fillTip:'Fill with cotton or soft foam.',enjoy:'Happy crafting!',cutLine:'CUT LINE',foldLine:'FOLD LINE',glueTab:'GLUE TAB',widthText:'Width',heightText:'Height',thickness:'Thickness',assemble:'ASSEMBLY INSTRUCTIONS',envelopeTitle:'CREATIVE ENVELOPE TEMPLATE',foldEnvelope:'Fold along dashed lines, then glue the side tabs.',themeLabel:'Theme'}};
+function T(){return translations[document.getElementById('language').value]}
+function applyLanguage(){const t=T(),en=document.getElementById('language').value==='en';document.documentElement.lang=en?'en':'id';const ids={tagline:'tagline',settingsTitle:'settings',languageLabel:'language',productLabel:'product',sideLabel:'side',cubeNote:'cubeNote',tabsLabel:'tabs',squishyNameLabel:'squishyName',squishyWidthLabel:'width',squishyHeightLabel:'height',squishyDepthLabel:'depth',squishyNote:'squishyNote',envelopeSizeLabel:'envelopeSize',envelopeThemeLabel:'theme',envelopeNote:'envelopeNote',make:'make',save:'save',saveNote:'saveNote'};for(const [id,key] of Object.entries(ids))document.getElementById(id).textContent=t[key];const product=document.getElementById('product');product.options[0].text=t.cube;product.options[1].text=t.squishy;product.options[2].text=t.envelope;const sn=document.getElementById('squishyName');sn.options[0].text=t.cake;sn.options[1].text=t.bear;sn.options[2].text=t.cat;sn.options[3].text=t.donut;const es=document.getElementById('envelopeSize');es.options[0].text=t.small;es.options[1].text=t.medium;es.options[2].text=t.large;const et=document.getElementById('envelopeTheme');et.options[0].text=t.heart;et.options[1].text=t.star;et.options[2].text=t.flower;}
+function svgEl(tag,attrs={}){const el=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);return el}
+function addText(svg,text,x,y,size=4,weight='normal',fill='#222',anchor='middle'){const e=svgEl('text',{x,y,'text-anchor':anchor,'font-size':size,'font-family':'Arial','font-weight':weight,fill});e.textContent=text;svg.appendChild(e);return e}
+function pageBase(title,subtitle=''){const svg=svgEl('svg',{xmlns:NS,viewBox:'0 0 210 297',width:'210mm',height:'297mm',role:'img','aria-label':title});svg.appendChild(svgEl('rect',{x:0,y:0,width:210,height:297,fill:'white',stroke:'none'}));addText(svg,title,105,17,6,'bold');if(subtitle)addText(svg,subtitle,105,24,3.5);return svg}
+function cubePattern(){const t=T(),side=Number(document.getElementById('side').value),tab=Number(document.getElementById('tabs').value);if(!Number.isFinite(side)||side<2||side>4.2){alert(document.getElementById('language').value==='en'?'Enter a side length between 2 and 4.2 cm.':'Masukkan panjang sisi antara 2 dan 4,2 cm.');return false}if(!Number.isFinite(tab)||tab<4||tab>10){alert(document.getElementById('language').value==='en'?'Enter glue tab width between 4 and 10 mm.':'Masukkan lebar perekat antara 4 dan 10 mm.');return false}const s=side*10,tt=tab,faces=[[0,1],[1,1],[2,1],[3,1],[1,0],[1,2]],occ=new Set(faces.map(([x,y])=>`${x},${y}`)),ox=(210-4*s)/2,oy=(297-3*s)/2,svg=pageBase(t.cubeTitle,`${t.sideText}: ${side} cm`);addText(svg,t.cut,105,34,3);addText(svg,t.glue,105,40,2.8);const g=svgEl('g',{transform:`translate(${ox},${oy+38})`});svg.appendChild(g);for(const [x,y] of faces)g.appendChild(svgEl('rect',{x:x*s,y:y*s,width:s,height:s,fill:'white',stroke:'#111','stroke-width':.4}));for(const [x,y] of faces){for(const e of [{dx:0,dy:-1,edge:'top'},{dx:1,dy:0,edge:'right'},{dx:0,dy:1,edge:'bottom'},{dx:-1,dy:0,edge:'left'}]){if(occ.has(`${x+e.dx},${y+e.dy}`))continue;const inset=Math.min(3,s*.15),d=Math.min(tt,s*.25);let pts;if(e.edge==='top')pts=[[x*s+inset,y*s],[x*s+s-inset,y*s],[x*s+s-inset-d,y*s-d],[x*s+inset+d,y*s-d]];else if(e.edge==='bottom')pts=[[x*s+inset,(y+1)*s],[x*s+s-inset,(y+1)*s],[x*s+s-inset-d,(y+1)*s+d],[x*s+inset+d,(y+1)*s+d]];else if(e.edge==='left')pts=[[x*s,y*s+inset],[x*s,(y+1)*s-inset],[x*s-d,(y+1)*s-inset-d],[x*s-d,y*s+inset+d]];else pts=[[(x+1)*s,y*s+inset],[(x+1)*s,(y+1)*s-inset],[(x+1)*s+d,(y+1)*s-inset-d],[(x+1)*s+d,y*s+inset+d]];g.appendChild(svgEl('polygon',{points:pts.map(p=>p.join(',')).join(' '),fill:'white',stroke:'#111','stroke-width':.4}));let x1,y1,x2,y2;if(e.edge==='top'){x1=x*s+inset;x2=(x+1)*s-inset;y1=y2=y*s}else if(e.edge==='bottom'){x1=x*s+inset;x2=(x+1)*s-inset;y1=y2=(y+1)*s}else if(e.edge==='left'){x1=x2=x*s;y1=y*s+inset;y2=(y+1)*s-inset}else{x1=x2=(x+1)*s;y1=y*s+inset;y2=(y+1)*s-inset}g.appendChild(svgEl('line',{x1,y1,x2,y2,stroke:'#555','stroke-width':.3,'stroke-dasharray':'1.5 1'}))}}for(const [x,y] of faces)for(const e of [{dx:1,dy:0},{dx:0,dy:1}])if(occ.has(`${x+e.dx},${y+e.dy}`)){let x1,y1,x2,y2;if(e.dx){x1=x2=(x+1)*s;y1=y*s;y2=(y+1)*s}else{x1=x*s;x2=(x+1)*s;y1=y2=(y+1)*s}g.appendChild(svgEl('line',{x1,y1,x2,y2,stroke:'#555','stroke-width':.5,'stroke-dasharray':'2 1.5'}))}addLegend(svg,t);paper.replaceChildren(svg);statusText.textContent=`${t.success} ${t.sideText} ${side} cm.`;return true}
+function addLegend(svg,t){addText(svg,t.cutLine,38,274,3.2,'bold');svg.appendChild(svgEl('line',{x1:18,y1:269,x2:58,y2:269,stroke:'#111','stroke-width':.6}));addText(svg,t.foldLine,105,274,3.2,'bold');svg.appendChild(svgEl('line',{x1:83,y1:269,x2:127,y2:269,stroke:'#555','stroke-width':.6,'stroke-dasharray':'2 1.5'}));addText(svg,t.glueTab,171,274,3.2,'bold')}
+function squishyPattern(){const t=T(),en=document.getElementById('language').value==='en',kind=document.getElementById('squishyName').value,w=Number(document.getElementById('squishyWidth').value),h=Number(document.getElementById('squishyHeight').value),d=Number(document.getElementById('squishyDepth').value);if(w<60||w>120||h<70||h>150||d<8||d>25){alert(en?'Please check the size values.':'Periksa kembali ukuran yang dimasukkan.');return false}const names={cake:en?'STRAWBERRY CAKE':'KUE STROBERI',bear:en?'CUTE BEAR':'BERUANG LUCU',cat:en?'CUTE CAT':'KUCING IMUT',donut:en?'SWEET DONUT':'DONAT MANIS'},svg=pageBase('DIY PAPER SQUISHY · '+names[kind],`${t.finished}: ${w} × ${h} × ${d} mm`);addText(svg,en?'CUT • FOLD • GLUE • FILL':'POTONG • LIPAT • REKATKAN • ISI',105,32,4,'bold','#c04477');const panelW=w/1.15,panelH=h/1.15,wall=d,centerX=105,totalW=panelW*2+wall+24,startX=(210-totalW)/2+12,startY=68;const colors={cake:'#f8c9d9',bear:'#c99a70',cat:'#f5dce8',donut:'#f6c75b'},color=colors[kind];function panel(x,y,face){const x0=x,y0=y;svg.appendChild(svgEl('rect',{x:x0,y:y0,width:panelW,height:panelH,rx:kind==='donut'?panelH*.45:4,fill:color,stroke:'#222','stroke-width':.8}));if(kind==='donut'){svg.appendChild(svgEl('ellipse',{cx:x0+panelW/2,cy:y0+panelH*.48,rx:panelW*.23,ry:panelH*.2,fill:'white',stroke:'#222','stroke-width':.7}));svg.appendChild(svgEl('ellipse',{cx:x0+panelW/2,cy:y0+panelH*.48,rx:panelW*.11,ry:panelH*.1,fill:'white',stroke:'#222','stroke-width':.5}))}else if(kind==='bear'){svg.appendChild(svgEl('circle',{cx:x0+panelW*.22,cy:y0+panelH*.12,r:panelW*.12,fill:color,stroke:'#222','stroke-width':.6}));svg.appendChild(svgEl('circle',{cx:x0+panelW*.78,cy:y0+panelH*.12,r:panelW*.12,fill:color,stroke:'#222','stroke-width':.6}))}else if(kind==='cat'){svg.appendChild(svgEl('polygon',{points:`${x0+panelW*.1},${y0+panelH*.2} ${x0+panelW*.2},${y0+panelH*.02} ${x0+panelW*.35},${y0+panelH*.2}`,fill:color,stroke:'#222','stroke-width':.6}));svg.appendChild(svgEl('polygon',{points:`${x0+panelW*.65},${y0+panelH*.2} ${x0+panelW*.8},${y0+panelH*.02} ${x0+panelW*.9},${y0+panelH*.2}`,fill:color,stroke:'#222','stroke-width':.6}))}else{svg.appendChild(svgEl('path',{d:`M ${x0+panelW*.18} ${y0+panelH*.28} Q ${x0+panelW*.12} ${y0+panelH*.12} ${x0+panelW*.3} ${y0+panelH*.16} Q ${x0+panelW*.5} ${y0+panelH*.05} ${x0+panelW*.7} ${y0+panelH*.16} Q ${x0+panelW*.88} ${y0+panelH*.12} ${x0+panelW*.82} ${y0+panelH*.28}`,fill:'#fff4ed',stroke:'#222','stroke-width':.7}))}for(const ex of [.32,.68])svg.appendChild(svgEl('circle',{cx:x0+panelW*ex,cy:y0+panelH*.48,r:panelW*.055,fill:'#222'}));svg.appendChild(svgEl('path',{d:`M ${x0+panelW*.43} ${y0+panelH*.58} Q ${x0+panelW*.5} ${y0+panelH*.66} ${x0+panelW*.57} ${y0+panelH*.58}`,fill:'none',stroke:'#222','stroke-width':.8}));addText(svg,face,x0+panelW/2,y0+panelH+5,3.1,'bold')}
+// Two face panels and the connecting side-wall strip.
+panel(startX,startY,en?'FRONT':'DEPAN');const wallX=startX+panelW;svg.appendChild(svgEl('rect',{x:wallX,y:startY,width:wall,height:panelH,fill:'#f3a9c6',stroke:'#222','stroke-width':.7}));for(let yy=startY+8;yy<startY+panelH-4;yy+=9)svg.appendChild(svgEl('line',{x1:wallX,y1:yy,x2:wallX+wall,y2:yy,stroke:'#fff','stroke-width':.6}));panel(wallX+wall+6,startY,en?'BACK':'BELAKANG');
+// Glue tabs around outside and fold indicators.
+const tab=9;for(const x of [startX,startX+panelW+wall+6]){svg.appendChild(svgEl('polygon',{points:`${x},${startY+8} ${x-tab},${startY+14} ${x-tab},${startY+panelH-14} ${x},${startY+panelH-8}`,fill:'#fff',stroke:'#222','stroke-width':.7}));svg.appendChild(svgEl('line',{x1:x,y1:startY+8,x2:x,y2:startY+panelH-8,stroke:'#555','stroke-dasharray':'2 1.5','stroke-width':.6}));for(const yy of [startY,startY+panelH]){svg.appendChild(svgEl('polygon',{points:`${x+2},${yy} ${x+9},${yy-7*(yy===startY?1:-1)} ${x+panelW-9},${yy-7*(yy===startY?1:-1)} ${x+panelW-2},${yy}`,fill:'#fff',stroke:'#222','stroke-width':.6}));svg.appendChild(svgEl('line',{x1:x+2,y1:yy,x2:x+panelW-2,y2:yy,stroke:'#555','stroke-dasharray':'2 1.5','stroke-width':.6}))}}
+addText(svg,t.assemble,105,223,4,'bold','#087e8b');const tips=[t.cutTip,t.foldTip,t.glueTip,t.fillTip,t.enjoy];tips.forEach((line,i)=>addText(svg,`${i+1}. ${line}`,18,232+i*6,3.3,'normal','#333','start'));addLegend(svg,t);paper.replaceChildren(svg);statusText.textContent=t.success;return true}
+function envelopePattern(){const t=T(),en=document.getElementById('language').value==='en',size=document.getElementById('envelopeSize').value,theme=document.getElementById('envelopeTheme').value;const dims=size==='small'?[90,60]:size==='large'?[150,100]:[120,80],w=dims[0],h=dims[1],cx=105,cy=143,svg=pageBase(t.envelopeTitle,`${t.widthText}: ${w} mm · ${t.heightText}: ${h} mm`),col=theme==='heart'?'#f5c6d6':theme==='star'?'#f6dc8a':'#cdebd4';svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy-h/2} ${cx+w/2},${cy-h/2} ${cx+w/2+18},${cy} ${cx+w/2},${cy+h/2} ${cx-w/2},${cy+h/2} ${cx-w/2-18},${cy}`,fill:'#fff',stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy-h/2} ${cx},${cy-h/2-35} ${cx+w/2},${cy-h/2}`,fill:col,stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy+h/2} ${cx},${cy+h/2+28} ${cx+w/2},${cy+h/2}`,fill:'#fff',stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy-h/2,x2:cx+w/2,y2:cy-h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy+h/2,x2:cx+w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy-h/2,x2:cx-w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx+w/2,y1:cy-h/2,x2:cx+w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));addText(svg,theme==='heart'?'♥':theme==='star'?'★':'✿',cx,cy+7,18,'bold',theme==='heart'?'#d34f80':theme==='star'?'#bd8a18':'#4d9b69');addText(svg,t.foldEnvelope,105,228,3.6);addLegend(svg,t);paper.replaceChildren(svg);statusText.textContent=t.success;return true}
+function generate(){const kind=document.getElementById('product').value;return kind==='cube'?cubePattern():kind==='squishy'?squishyPattern():envelopePattern()}
+function updateProduct(){const p=document.getElementById('product').value;document.getElementById('cubeOptions').hidden=p!=='cube';document.getElementById('squishyOptions').hidden=p!=='squishy';document.getElementById('envelopeOptions').hidden=p!=='envelope'}
+document.getElementById('language').addEventListener('change',()=>{applyLanguage();generate()});document.getElementById('product').addEventListener('change',()=>{updateProduct();generate()});document.getElementById('make').addEventListener('click',generate);document.getElementById('save').addEventListener('click',()=>{if(generate())window.print()});
+applyLanguage();updateProduct();generate();
 </script>
 </body>
 </html>
