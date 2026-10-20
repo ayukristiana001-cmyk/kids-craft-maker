@@ -744,8 +744,17 @@ function updateProduct(){
   document.getElementById('envelopeOptions').hidden = p !== 'envelope';
   document.getElementById('characterOptions').hidden = p !== 'character';
 }
-document.getElementById('language').addEventListener('change',()=>{applyLanguage();generate();});
-document.getElementById('product').addEventListener('change',()=>{updateProduct();generate();});
+
+document.getElementById('language').addEventListener('change', () => {
+  applyLanguage();
+});
+
+document.getElementById('product').addEventListener('change', () => {
+  updateProduct();
+  paper.replaceChildren();
+  statusText.textContent = 'Pilihan berubah. Tekan Buat Pola untuk melihat pola.';
+});
+
 
 document.getElementById('make').addEventListener('click', () => {
   generate();
