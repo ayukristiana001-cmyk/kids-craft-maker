@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kids Craft Maker</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f7fb;color:#243047;font-family:Arial,sans-serif}
+header{background:#087e8b;color:#fff;padding:22px 16px;text-align:center}
+header h1{margin:0 0 8px;font-size:27px}header p{margin:0;font-size:14px}
+main{max-width:850px;margin:20px auto;padding:0 14px}
+.panel{background:#fff;padding:18px;border-radius:16px;margin-bottom:16px;box-shadow:0 3px 14px #17255410}
+h2{font-size:19px;margin:0 0 14px}label{display:block;font-weight:bold;margin:12px 0 8px}
+input,select,button{font:inherit}input,select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:9px;background:#fff}
+button{border:0;border-radius:10px;padding:13px 16px;font-weight:bold;cursor:pointer}
+.primary{background:#087e8b;color:#fff;width:100%;margin-top:14px}
+.secondary{background:#e0f2fe;color:#075985;width:100%;margin-top:9px}
+.note{font-size:13px;color:#64748b;line-height:1.6}
+.preview{overflow:auto;background:#e8edf4;padding:12px;border-radius:10px;text-align:center}
+#printArea{background:#fff}
+#paper{background:#fff;width:100%;max-width:440px;margin:auto;box-shadow:0 2px 10px #0002}
+#paper svg{display:block;width:100%;height:auto}
+#paper svg polygon{stroke:#111;stroke-width:.45;stroke-linejoin:round}
+#paper svg rect{stroke:#111}#paper svg line{stroke:#555}
+.status{font-size:14px;line-height:1.6}
+footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
+@media screen{.print-area{display:none!important}}
+@page portraitPage{size:A4 portrait;margin:0}
+@page landscapePage{size:A4 landscape;margin:0}
+body{page:portraitPage}body.page-landscape{page:landscapePage}
+@media print{
+  body{background:#fff;margin:0}
+  header,.controls,.preview-title,footer,.note-screen,.status{display:none!important}
+  .print-area{display:block!important}
+  main{width:100%;max-width:none;margin:0;padding:0}
+  .panel{padding:0;margin:0;border-radius:0;box-shadow:none}
+  .preview{padding:0;margin:0;background:#fff;overflow:visible;border-radius:0}
+  #paper{width:210mm;max-width:none;height:297mm;margin:0;box-shadow:none}
+  #paper svg{width:210mm;height:297mm}
+  body.page-landscape #paper{width:297mm;height:210mm}
+  body.page-landscape #paper svg{width:297mm;height:210mm}
+}
+</style>
+</head>
+<body>
+<header><h1>✂️ Kids Craft Maker</h1><p id="tagline">Rancang pola prakarya, cetak, lipat, dan rakit!</p></header>
+<main>
+<section class="panel controls">
+<h2 id="settingsTitle">Pengaturan Prakarya</h2>
+<label for="language" id="languageLabel">Pilih bahasa / Choose language</label>
+<select id="language"><option value="id">Bahasa Indonesia</option><option value="en">English</option></select>
+<label for="product" id="productLabel">Jenis prakarya</label>
+<select id="product"><option value="cube">Pola Kubus</option><option value="squishy">DIY Squishy Paper</option><option value="envelope">Amplop Kreatif</option></select>
+<div id="cubeOptions">
+<label for="side" id="sideLabel">Panjang sisi kubus (cm)</label><input id="side" type="number" min="2" max="4.2" step="0.1" value="3">
+<p class="note" id="cubeNote">Ukuran sisi 2–4,2 cm. Pola disusun untuk kertas A4 vertikal.</p>
+<label for="tabs" id="tabsLabel">Lebar lidah perekat (mm)</label><input id="tabs" type="number" min="4" max="10" step="1" value="6">
+</div>
+<div id="squishyOptions" hidden>
+<label for="squishyName" id="squishyNameLabel">Nama desain</label><select id="squishyName"><option value="cake">Kue Stroberi</option><option value="bear">Beruang Lucu</option><option value="cat">Kucing Imut</option><option value="donut">Donat Manis</option></select>
+<label for="squishyWidth" id="squishyWidthLabel">Lebar hasil jadi (mm)</label><input id="squishyWidth" type="number" min="60" max="100" value="100">
+<label for="squishyHeight" id="squishyHeightLabel">Tinggi hasil jadi (mm)</label><input id="squishyHeight" type="number" min="70" max="120" value="120">
+<label for="squishyDepth" id="squishyDepthLabel">Tebal/dinding samping (mm)</label><input id="squishyDepth" type="number" min="8" max="16" value="12">
+<p class="note" id="squishyNote">Pola A4 lanskap lengkap dengan gambar hasil jadi, dua panel, dinding samping, tab lem, legenda, dan petunjuk.</p>
+</div>
+<div id="envelopeOptions" hidden>
+<label for="envelopeSize" id="envelopeSizeLabel">Ukuran amplop</label><select id="envelopeSize"><option value="small">Kecil</option><option value="medium" selected>Sedang</option><option value="large">Besar</option></select>
+<label for="envelopeTheme" id="envelopeThemeLabel">Tema hiasan</label><select id="envelopeTheme"><option value="heart">Hati</option><option value="star">Bintang</option><option value="flower">Bunga</option></select>
+<p class="note" id="envelopeNote">Pola amplop dengan garis potong dan garis lipat.</p>
+</div>
+<button class="primary" id="make">Buat Pola</button><button class="secondary" id="save">Cetak / Simpan PDF</button>
+<p class="note" id="saveNote">Saat jendela cetak muncul, pilih Simpan sebagai PDF, kertas A4, skala 100%, dan matikan header/footer browser jika tersedia.</p>
+</section>
+<section class="panel print-area" aria-label="Print-ready craft page"><h2 class="preview-title">Pratinjau Pola</h2><div class="preview"><div id="paper"></div></div><p class="status" id="status" aria-live="polite">Pola siap dibuat.</p><p class="note note-screen">Garis utuh = potong. Garis putus-putus = lipat.</p></section>
+</main><footer>Kids Craft Maker · Pola prakarya anak</footer>
+<script>
+const NS='http://www.w3.org/2000/svg';const paper=document.getElementById('paper');const statusText=document.getElementById('status');
+const translations={id:{tagline:'Rancang pola prakarya, cetak, lipat, dan rakit!',settings:'Pengaturan Prakarya',language:'Pilih bahasa / Choose language',product:'Jenis prakarya',cube:'Pola Kubus',squishy:'DIY Squishy Paper',envelope:'Amplop Kreatif',side:'Panjang sisi kubus (cm)',cubeNote:'Ukuran sisi 2–4,2 cm. Pola disusun untuk kertas A4 vertikal.',tabs:'Lebar lidah perekat (mm)',squishyName:'Nama desain',cake:'Kue Stroberi',bear:'Beruang Lucu',cat:'Kucing Imut',donut:'Donat Manis',width:'Lebar hasil jadi (mm)',height:'Tinggi hasil jadi (mm)',depth:'Tebal/dinding samping (mm)',squishyNote:'Pola A4 lanskap lengkap dengan gambar hasil jadi, dua panel, dinding samping, tab lem, legenda, dan petunjuk.',envelopeSize:'Ukuran amplop',small:'Kecil',medium:'Sedang',large:'Besar',theme:'Tema hiasan',heart:'Hati',star:'Bintang',flower:'Bunga',envelopeNote:'Pola amplop dengan garis potong dan garis lipat.',make:'Buat Pola',save:'Cetak / Simpan PDF',saveNote:'Saat jendela cetak muncul, pilih Simpan sebagai PDF, kertas A4, skala 100%, dan matikan header/footer browser jika tersedia.',cubeTitle:'POLA KUBUS',cut:'Garis utuh: potong | Garis putus-putus: lipat',glue:'Oleskan lem pada lidah perekat, lalu satukan sisi kubus.',sideText:'Panjang setiap sisi',success:'Pola berhasil dibuat.',finished:'Ukuran setelah dirakit',tips:'Tips',cutTip:'Potong mengikuti garis utuh.',foldTip:'Lipat mengikuti garis putus-putus.',glueTip:'Oleskan lem pada lidah perekat.',fillTip:'Isi dengan kapas atau busa ringan.',enjoy:'Selamat berkreasi!',cutLine:'GARIS POTONG',foldLine:'GARIS LIPAT',glueTab:'LIDAH PEREKAT',widthText:'Lebar',heightText:'Tinggi',thickness:'Tebal',assemble:'PETUNJUK PERAKITAN',envelopeTitle:'POLA AMPLOP KREATIF',foldEnvelope:'Lipat pada garis putus-putus, lalu rekatkan sisi samping.',themeLabel:'Tema'},en:{tagline:'Design your craft, print, fold, and assemble!',settings:'Craft Settings',language:'Choose language / Pilih bahasa',product:'Craft type',cube:'Cube Net',squishy:'DIY Paper Squishy',envelope:'Creative Envelope',side:'Cube side length (cm)',cubeNote:'Side length 2–4.2 cm. Designed for portrait A4 paper.',tabs:'Glue tab width (mm)',squishyName:'Design',cake:'Strawberry Cake',bear:'Cute Bear',cat:'Cute Cat',donut:'Sweet Donut',width:'Finished width (mm)',height:'Finished height (mm)',depth:'Thickness/side wall (mm)',squishyNote:'Landscape A4 sheet with a finished preview, two face panels, side wall, glue tabs, legend, and instructions.',envelopeSize:'Envelope size',small:'Small',medium:'Medium',large:'Large',theme:'Decoration theme',heart:'Heart',star:'Star',flower:'Flower',envelopeNote:'Envelope template with cut and fold lines.',make:'Generate Template',save:'Print / Save PDF',saveNote:'In the print window, choose Save as PDF, A4 paper, 100% scale, and turn off browser headers/footers if available.',cubeTitle:'CUBE NET',cut:'Solid line: cut | Dashed line: fold',glue:'Apply glue to the tabs, then join the cube sides.',sideText:'Each side',success:'Template generated.',finished:'Finished size',tips:'Tips',cutTip:'Cut along the solid lines.',foldTip:'Fold along the dashed lines.',glueTip:'Apply glue to the tabs.',fillTip:'Fill with cotton or soft foam.',enjoy:'Happy crafting!',cutLine:'CUT LINE',foldLine:'FOLD LINE',glueTab:'GLUE TAB',widthText:'Width',heightText:'Height',thickness:'Thickness',assemble:'ASSEMBLY INSTRUCTIONS',envelopeTitle:'CREATIVE ENVELOPE TEMPLATE',foldEnvelope:'Fold along dashed lines, then glue the side tabs.',themeLabel:'Theme'}};
+function T(){return translations[document.getElementById('language').value]}
+function applyLanguage(){const t=T(),en=document.getElementById('language').value==='en';document.documentElement.lang=en?'en':'id';const ids={tagline:'tagline',settingsTitle:'settings',languageLabel:'language',productLabel:'product',sideLabel:'side',cubeNote:'cubeNote',tabsLabel:'tabs',squishyNameLabel:'squishyName',squishyWidthLabel:'width',squishyHeightLabel:'height',squishyDepthLabel:'depth',squishyNote:'squishyNote',envelopeSizeLabel:'envelopeSize',envelopeThemeLabel:'theme',envelopeNote:'envelopeNote',make:'make',save:'save',saveNote:'saveNote'};for(const [id,key] of Object.entries(ids))document.getElementById(id).textContent=t[key];const product=document.getElementById('product');product.options[0].text=t.cube;product.options[1].text=t.squishy;product.options[2].text=t.envelope;const sn=document.getElementById('squishyName');sn.options[0].text=t.cake;sn.options[1].text=t.bear;sn.options[2].text=t.cat;sn.options[3].text=t.donut;const es=document.getElementById('envelopeSize');es.options[0].text=t.small;es.options[1].text=t.medium;es.options[2].text=t.large;const et=document.getElementById('envelopeTheme');et.options[0].text=t.heart;et.options[1].text=t.star;et.options[2].text=t.flower;}
+function svgEl(tag,attrs={}){const el=document.createElementNS(NS,tag);for(const [k,v] of Object.entries(attrs))el.setAttribute(k,v);return el}
+function addText(svg,text,x,y,size=4,weight='normal',fill='#222',anchor='middle'){const e=svgEl('text',{x,y,'text-anchor':anchor,'font-size':size,'font-family':'Arial','font-weight':weight,fill});e.textContent=text;svg.appendChild(e);return e}
+function pageBase(title,subtitle='',landscape=false){const pw=landscape?297:210,ph=landscape?210:297;const svg=svgEl('svg',{xmlns:NS,viewBox:`0 0 ${pw} ${ph}`,width:`${pw}mm`,height:`${ph}mm`,role:'img','aria-label':title});svg.appendChild(svgEl('rect',{x:0,y:0,width:pw,height:ph,fill:'white',stroke:'none'}));addText(svg,title,pw/2,landscape?13:17,landscape?5.8:6,'bold','#222');if(subtitle)addText(svg,subtitle,pw/2,landscape?21:24,landscape?3.1:3.5);return svg}
+function cubePattern(){const t=T(),side=Number(document.getElementById('side').value),tab=Number(document.getElementById('tabs').value);if(!Number.isFinite(side)||side<2||side>4.2){alert(document.getElementById('language').value==='en'?'Enter a side length between 2 and 4.2 cm.':'Masukkan panjang sisi antara 2 dan 4,2 cm.');return false}if(!Number.isFinite(tab)||tab<4||tab>10){alert(document.getElementById('language').value==='en'?'Enter glue tab width between 4 and 10 mm.':'Masukkan lebar perekat antara 4 dan 10 mm.');return false}const s=side*10,tt=tab,faces=[[0,1],[1,1],[2,1],[3,1],[1,0],[1,2]],occ=new Set(faces.map(([x,y])=>`${x},${y}`)),ox=(210-4*s)/2,oy=(297-3*s)/2,svg=pageBase(t.cubeTitle,`${t.sideText}: ${side} cm`);addText(svg,t.cut,105,34,3);addText(svg,t.glue,105,40,2.8);const g=svgEl('g',{transform:`translate(${ox},${oy+38})`});svg.appendChild(g);for(const [x,y] of faces)g.appendChild(svgEl('rect',{x:x*s,y:y*s,width:s,height:s,fill:'white',stroke:'#111','stroke-width':.4}));for(const [x,y] of faces){for(const e of [{dx:0,dy:-1,edge:'top'},{dx:1,dy:0,edge:'right'},{dx:0,dy:1,edge:'bottom'},{dx:-1,dy:0,edge:'left'}]){if(occ.has(`${x+e.dx},${y+e.dy}`))continue;const inset=Math.min(3,s*.15),d=Math.min(tt,s*.25);let pts;if(e.edge==='top')pts=[[x*s+inset,y*s],[x*s+s-inset,y*s],[x*s+s-inset-d,y*s-d],[x*s+inset+d,y*s-d]];else if(e.edge==='bottom')pts=[[x*s+inset,(y+1)*s],[x*s+s-inset,(y+1)*s],[x*s+s-inset-d,(y+1)*s+d],[x*s+inset+d,(y+1)*s+d]];else if(e.edge==='left')pts=[[x*s,y*s+inset],[x*s,(y+1)*s-inset],[x*s-d,(y+1)*s-inset-d],[x*s-d,y*s+inset+d]];else pts=[[(x+1)*s,y*s+inset],[(x+1)*s,(y+1)*s-inset],[(x+1)*s+d,(y+1)*s-inset-d],[(x+1)*s+d,y*s+inset+d]];g.appendChild(svgEl('polygon',{points:pts.map(p=>p.join(',')).join(' '),fill:'white',stroke:'#111','stroke-width':.4}));let x1,y1,x2,y2;if(e.edge==='top'){x1=x*s+inset;x2=(x+1)*s-inset;y1=y2=y*s}else if(e.edge==='bottom'){x1=x*s+inset;x2=(x+1)*s-inset;y1=y2=(y+1)*s}else if(e.edge==='left'){x1=x2=x*s;y1=y*s+inset;y2=(y+1)*s-inset}else{x1=x2=(x+1)*s;y1=y*s+inset;y2=(y+1)*s-inset}g.appendChild(svgEl('line',{x1,y1,x2,y2,stroke:'#555','stroke-width':.3,'stroke-dasharray':'1.5 1'}))}}for(const [x,y] of faces)for(const e of [{dx:1,dy:0},{dx:0,dy:1}])if(occ.has(`${x+e.dx},${y+e.dy}`)){let x1,y1,x2,y2;if(e.dx){x1=x2=(x+1)*s;y1=y*s;y2=(y+1)*s}else{x1=x*s;x2=(x+1)*s;y1=y2=(y+1)*s}g.appendChild(svgEl('line',{x1,y1,x2,y2,stroke:'#555','stroke-width':.5,'stroke-dasharray':'2 1.5'}))}addLegend(svg,t);paper.replaceChildren(svg);statusText.textContent=`${t.success} ${t.sideText} ${side} cm.`;return true}
+function addLegend(svg,t){addText(svg,t.cutLine,38,274,3.2,'bold');svg.appendChild(svgEl('line',{x1:18,y1:269,x2:58,y2:269,stroke:'#111','stroke-width':.6}));addText(svg,t.foldLine,105,274,3.2,'bold');svg.appendChild(svgEl('line',{x1:83,y1:269,x2:127,y2:269,stroke:'#555','stroke-width':.6,'stroke-dasharray':'2 1.5'}));addText(svg,t.glueTab,171,274,3.2,'bold')}
+function squishyPattern(){
+  const t=T(), en=document.getElementById('language').value==='en';
+  const kind=document.getElementById('squishyName').value;
+  const w=Number(document.getElementById('squishyWidth').value);
+  const h=Number(document.getElementById('squishyHeight').value);
+  const d=Number(document.getElementById('squishyDepth').value);
+  if(!Number.isFinite(w)||w<60||w>100||!Number.isFinite(h)||h<70||h>120||!Number.isFinite(d)||d<8||d>16){
+    alert(en?'Use width 60–100 mm, height 70–120 mm, and side depth 8–16 mm.':'Gunakan lebar 60–100 mm, tinggi 70–120 mm, dan tebal 8–16 mm.');return false;
+  }
+  const names={cake:en?'STRAWBERRY CAKE':'KUE STROBERI',bear:en?'STRAWBERRY BEAR':'BERUANG STROBERI',cat:en?'CAT DONUT':'KUCING DONAT',donut:en?'SWEET DONUT':'DONAT MANIS'};
+  const title=(en?'DIY PAPER SQUISHY · ':'DIY SQUISHY PAPER · ')+names[kind];
+  const svg=pageBase(title,`${t.finished}: ${w} × ${h} × ${d} mm`,true);
+  document.body.classList.add('page-landscape');
+  const W=297,H=210,tab=8,netW=2*w+d+2*tab;
+  const x0=Math.max(5,(W-netW-45-10)/2);
+  const faceX=x0+tab, faceY=35+tab+d, backX=faceX+w+d, netRight=backX+w;
+  const topWallY=faceY-d, bottomWallY=faceY+h;
+  const accent={cake:'#f3a0bd',bear:'#d5a06f',cat:'#f2c6da',donut:'#f1bb59'}[kind];
+  const faceBg={cake:'#fff0f5',bear:'#fff3df',cat:'#fff0f7',donut:'#fff5d6'}[kind];
+  const wallBg={cake:'#f4a6c1',bear:'#c58a58',cat:'#e9a8c4',donut:'#edaa47'}[kind];
+  const cut=(x1,y1,x2,y2)=>svg.appendChild(svgEl('line',{x1,y1,x2,y2,stroke:'#222','stroke-width':.65,'stroke-linecap':'round'}));
+  const fold=(x1,y1,x2,y2)=>svg.appendChild(svgEl('line',{x1,y1,x2,y2,stroke:'#606776','stroke-width':.55,'stroke-dasharray':'2.2 1.6','stroke-linecap':'butt'}));
+  const fillRect=(x,y,width,height,fill)=>svg.appendChild(svgEl('rect',{x,y,width,height,fill,stroke:'none'}));
+  const poly=(points,fill='#fff')=>svg.appendChild(svgEl('polygon',{points:points.map(p=>p.join(',')).join(' '),fill,stroke:'none'}));
+  const linePoly=(pts)=>{for(let i=0;i<pts.length;i++){const a=pts[i],b=pts[(i+1)%pts.length];cut(a[0],a[1],b[0],b[1]);}};
+  addText(svg,en?'CUT • FOLD • GLUE • FILL':'POTONG • LIPAT • LEM • ISI',128,28,3.3,'bold','#bd4f7e');
+
+  // Two full-size faces joined by one side-wall strip; top and bottom wall strips span the net.
+  fillRect(faceX,faceY,w,h,faceBg);
+  fillRect(backX,faceY,w,h,faceBg);
+  fillRect(faceX+w,faceY,d,h,wallBg);
+  fillRect(faceX,topWallY,2*w+d,d,wallBg);
+  fillRect(faceX,bottomWallY,2*w+d,d,wallBg);
+  // Side glue tabs at the two outer edges.
+  const leftTab=[[faceX,faceY+8],[faceX-tab,faceY+14],[faceX-tab,faceY+h-14],[faceX,faceY+h-8]];
+  const rightTab=[[netRight,faceY+8],[netRight+tab,faceY+14],[netRight+tab,faceY+h-14],[netRight,faceY+h-8]];
+  poly(leftTab,wallBg);poly(rightTab,wallBg);
+  // Top/bottom glue tabs for each face, plus a compact tab on the connector wall.
+  const topTabs=[
+    [[faceX+7,topWallY],[faceX+w-7,topWallY],[faceX+w-13,topWallY-tab],[faceX+13,topWallY-tab]],
+    [[backX+7,topWallY],[backX+w-7,topWallY],[backX+w-13,topWallY-tab],[backX+13,topWallY-tab]]
+  ];
+  const bottomTabs=[
+    [[faceX+7,faceY+h+d],[faceX+w-7,faceY+h+d],[faceX+w-13,faceY+h+d+tab],[faceX+13,faceY+h+d+tab]],
+    [[backX+7,faceY+h+d],[backX+w-7,faceY+h+d],[backX+w-13,faceY+h+d+tab],[backX+13,faceY+h+d+tab]]
+  ];
+  topTabs.forEach(p=>poly(p,'#fff'));bottomTabs.forEach(p=>poly(p,'#fff'));
+  // Connector tabs at the upper/lower end of the side wall.
+  const connectorTop=[[faceX+w+1,topWallY],[backX-1,topWallY],[backX-2,topWallY-tab],[faceX+w+2,topWallY-tab]];
+  const connectorBottom=[[faceX+w+1,faceY+h+d],[backX-1,faceY+h+d],[backX-2,faceY+h+d+tab],[faceX+w+2,faceY+h+d+tab]];
+  poly(connectorTop,'#fff');poly(connectorBottom,'#fff');
+
+  function eye(cx,cy,r){svg.appendChild(svgEl('circle',{cx,cy,r,fill:'#26202b',stroke:'#26202b','stroke-width':.3}));svg.appendChild(svgEl('circle',{cx:cx-r*.27,cy:cy-r*.32,r:r*.22,fill:'#fff',stroke:'none'}));}
+  function blush(cx,cy,rx,ry){svg.appendChild(svgEl('ellipse',{cx,cy,rx,ry,fill:'#f49bb5',opacity:.82,stroke:'none'}));}
+  function drawFace(x,y,ww,hh,isBack=false){
+    const cx=x+ww/2, top=y;
+    for(let i=0;i<8;i++){
+      const px=x+ww*(.09+(i%4)*.24), py=y+hh*(.09+Math.floor(i/4)*.82);
+      svg.appendChild(svgEl('circle',{cx:px,cy:py,r:1.1,fill:['#f0b84e','#7fc9db','#c7a1df','#ed9fbb'][i%4],stroke:'none'}));
+    }
+    if(kind==='cake'){
+      const bx=x+ww*.16, by=y+hh*.30, bw=ww*.68, bh=hh*.56;
+      svg.appendChild(svgEl('rect',{x:bx,y:by+bh*.12,width:bw,height:bh*.83,rx:3,fill:'#ffd56d',stroke:'#6e432d','stroke-width':.8}));
+      fillRect(bx+1,by+bh*.56,bw-2,bh*.13,'#f59fc0');fillRect(bx+1,by+bh*.73,bw-2,bh*.10,'#fff1dc');
+      svg.appendChild(svgEl('path',{d:`M ${bx} ${by+bh*.20} Q ${bx-bw*.07} ${by+bh*.05} ${bx+bw*.10} ${by+bh*.08} Q ${bx+bw*.22} ${by-bh*.02} ${bx+bw*.34} ${by+bh*.08} Q ${bx+bw*.50} ${by-bh*.04} ${bx+bw*.64} ${by+bh*.08} Q ${bx+bw*.82} ${by+bh*.02} ${bx+bw} ${by+bh*.19} L ${bx+bw} ${by+bh*.28} L ${bx} ${by+bh*.28} Z`,fill:'#fff7ed',stroke:'#6e432d','stroke-width':.75}));
+      svg.appendChild(svgEl('path',{d:`M ${cx} ${by-bh*.28} C ${cx-ww*.12} ${by-bh*.26},${cx-ww*.15} ${by-bh*.10},${cx} ${by+bh*.03} C ${cx+ww*.15} ${by-bh*.10},${cx+ww*.12} ${by-bh*.26},${cx} ${by-bh*.28} Z`,fill:'#ed4f5b',stroke:'#8e2935','stroke-width':.7}));
+      svg.appendChild(svgEl('path',{d:`M ${cx-ww*.10} ${by-bh*.24} Q ${cx-ww*.14} ${by-bh*.34} ${cx-ww*.03} ${by-bh*.29} Q ${cx} ${by-bh*.39} ${cx+ww*.03} ${by-bh*.29} Q ${cx+ww*.14} ${by-bh*.34} ${cx+ww*.10} ${by-bh*.24} Z`,fill:'#55a85b',stroke:'#32763a','stroke-width':.6}));
+      for(const [dx,dy] of [[-.04,-.19],[.04,-.18],[-.02,-.11],[.055,-.10]])svg.appendChild(svgEl('ellipse',{cx:cx+ww*dx,cy:by+hh*dy,rx:ww*.009,ry:hh*.008,fill:'#ffe8a1',stroke:'none'}));
+      if(!isBack){eye(cx-ww*.17,by+bh*.48,ww*.048);eye(cx+ww*.17,by+bh*.48,ww*.048);blush(cx-ww*.25,by+bh*.60,ww*.055,hh*.025);blush(cx+ww*.25,by+bh*.60,ww*.055,hh*.025);svg.appendChild(svgEl('path',{d:`M ${cx-ww*.045} ${by+bh*.60} Q ${cx} ${by+bh*.72} ${cx+ww*.045} ${by+bh*.60} Q ${cx+ww*.04} ${by+bh*.75} ${cx} ${by+bh*.74} Q ${cx-ww*.04} ${by+bh*.75} ${cx-ww*.045} ${by+bh*.60} Z`,fill:'#a52d45',stroke:'#54202a','stroke-width':.45}));}
+      else {eye(cx-ww*.17,by+bh*.48,ww*.048);eye(cx+ww*.17,by+bh*.48,ww*.048);addText(svg,'♥',cx,by+bh*.66,5,'bold','#bd4f7e');}
+    } else if(kind==='bear'){
+      const r=ww*.12, hy=top+hh*.30;
+      for(const ex of [.31,.69]){svg.appendChild(svgEl('circle',{cx:x+ww*ex,cy:hy-hh*.07,r,fill:'#b7784d',stroke:'#633d2e','stroke-width':.8}));svg.appendChild(svgEl('circle',{cx:x+ww*ex,cy:hy-hh*.07,r:r*.52,fill:'#f6c0bd',stroke:'none'}));}
+      svg.appendChild(svgEl('ellipse',{cx,cy:top+hh*.61,rx:ww*.30,ry:hh*.25,fill:'#c78a5d',stroke:'#633d2e','stroke-width':.8}));
+      svg.appendChild(svgEl('ellipse',{cx,cy:hy,rx:ww*.30,ry:hh*.25,fill:'#d79a6a',stroke:'#633d2e','stroke-width':.8}));
+      svg.appendChild(svgEl('ellipse',{cx,cy:top+hh*.66,rx:ww*.18,ry:hh*.15,fill:'#f9e3b8',stroke:'none'}));
+      eye(cx-ww*.12,hy-hh*.01,ww*.035);eye(cx+ww*.12,hy-hh*.01,ww*.035);svg.appendChild(svgEl('ellipse',{cx,cy:hy+hh*.08,rx:ww*.055,ry:hh*.038,fill:'#613a32'}));if(!isBack){blush(cx-ww*.22,hy+hh*.07,ww*.045,hh*.022);blush(cx+ww*.22,hy+hh*.07,ww*.045,hh*.022);}addText(svg,'♥',cx,top+hh*.84,6,'bold','#d94c77');
+    } else if(kind==='cat'){
+      const hx=x+ww*.15, hy=top+hh*.25, hw=ww*.70, hh2=hh*.45;
+      svg.appendChild(svgEl('path',{d:`M ${hx} ${hy+hh2*.35} L ${hx+hw*.08} ${hy-hh2*.28} L ${hx+hw*.34} ${hy+hh2*.02} Q ${cx} ${hy-hh2*.18} ${hx+hw*.66} ${hy+hh2*.02} L ${hx+hw*.92} ${hy-hh2*.28} L ${hx+hw} ${hy+hh2*.35} Q ${hx+hw} ${hy+hh2*1.12} ${cx} ${hy+hh2*1.05} Q ${hx} ${hy+hh2*1.12} ${hx} ${hy+hh2*.35} Z`,fill:'#fff8f5',stroke:'#6f4b5b','stroke-width':.8}));
+      svg.appendChild(svgEl('path',{d:`M ${hx+hw*.13} ${hy-hh2*.16} L ${hx+hw*.13} ${hy+hh2*.23} L ${hx+hw*.29} ${hy+hh2*.11} Z M ${hx+hw*.71} ${hy+hh2*.11} L ${hx+hw*.87} ${hy+hh2*.23} L ${hx+hw*.87} ${hy-hh2*.16} Z`,fill:'#f1a7c4',stroke:'none'}));
+      eye(cx-ww*.15,hy+hh2*.48,ww*.04);eye(cx+ww*.15,hy+hh2*.48,ww*.04);blush(cx-ww*.25,hy+hh2*.62,ww*.05,hh*.023);blush(cx+ww*.25,hy+hh2*.62,ww*.05,hh*.023);svg.appendChild(svgEl('path',{d:`M ${cx-ww*.035} ${hy+hh2*.59} Q ${cx} ${hy+hh2*.70} ${cx+ww*.035} ${hy+hh2*.59}`,fill:'none',stroke:'#6f4b5b','stroke-width':.8}));
+      svg.appendChild(svgEl('path',{d:`M ${cx} ${hy-hh2*.18} Q ${cx-ww*.12} ${hy-hh2*.34} ${cx-ww*.12} ${hy-hh2*.16} Q ${cx-ww*.08} ${hy} ${cx} ${hy-hh2*.18} Q ${cx+ww*.12} ${hy-hh2*.34} ${cx+ww*.12} ${hy-hh2*.16} Q ${cx+ww*.08} ${hy} ${cx} ${hy-hh2*.18} Z`,fill:'#ed77a0',stroke:'#813f60','stroke-width':.5}));
+    } else {
+      const dcx=cx,dcy=top+hh*.53,ro=Math.min(ww*.34,hh*.25),ri=ro*.43;
+      svg.appendChild(svgEl('circle',{cx:dcx,cy:dcy,r:ro,fill:'#d99147',stroke:'#85502b','stroke-width':.8}));
+      svg.appendChild(svgEl('path',{d:`M ${dcx-ro*.83} ${dcy-ro*.15} Q ${dcx-ro*.78} ${dcy-ro*.9} ${dcx-ro*.27} ${dcy-ro*.81} Q ${dcx} ${dcy-ro*1.02} ${dcx+ro*.26} ${dcy-ro*.82} Q ${dcx+ro*.82} ${dcy-ro*.92} ${dcx+ro*.85} ${dcy-ro*.14} L ${dcx+ro*.62} ${dcy+ro*.35} Q ${dcx+ro*.38} ${dcy+ro*.62} ${dcx+ro*.20} ${dcy+ro*.32} Q ${dcx} ${dcy+ro*.65} ${dcx-ro*.22} ${dcy+ro*.36} Q ${dcx-ro*.55} ${dcy+ro*.62} ${dcx-ro*.68} ${dcy+ro*.27} Z`,fill:'#ff9fbc',stroke:'#9e4f70','stroke-width':.7}));
+      svg.appendChild(svgEl('circle',{cx:dcx,cy:dcy,r:ri,fill:faceBg,stroke:'#85502b','stroke-width':.6}));
+      for(let i=0;i<8;i++){const a=i*Math.PI/4;svg.appendChild(svgEl('ellipse',{cx:dcx+Math.cos(a)*ro*.68,cy:dcy+Math.sin(a)*ro*.68,rx:ww*.014,ry:hh*.009,transform:`rotate(${i*45} ${dcx+Math.cos(a)*ro*.68} ${dcy+Math.sin(a)*ro*.68})`,fill:['#7bb8e6','#f4df6e','#8ecb8f'][i%3],stroke:'none'}))}
+      eye(dcx-ro*.34,dcy+ro*.26,ww*.035);eye(dcx+ro*.34,dcy+ro*.26,ww*.035);svg.appendChild(svgEl('path',{d:`M ${dcx-ww*.035} ${dcy+ro*.50} Q ${dcx} ${dcy+ro*.61} ${dcx+ww*.035} ${dcy+ro*.50}`,fill:'none',stroke:'#633d2e','stroke-width':.8}));
+    }
+  }
+  drawFace(faceX,faceY,w,h,false);drawFace(backX,faceY,w,h,true);
+  for(let yy=faceY+8;yy<faceY+h-4;yy+=10){svg.appendChild(svgEl('circle',{cx:faceX+w+d/2,cy:yy,r:1.1,fill:'#fff3fa',stroke:'none'}));}
+  // Solid cut contour around outer edges and the glue tabs.
+  const netLeft=faceX-tab,netRightEdge=netRight+tab;
+  [[netLeft,faceY+14,netLeft,faceY+h-14],[netLeft,faceY+14,faceX,faceY+8],[netLeft,faceY+h-14,faceX,faceY+h-8],
+   [faceX,topWallY,faceX,faceY],[faceX,topWallY,faceX+w,topWallY],[faceX+w,topWallY,faceX+w,faceY],
+   [backX,topWallY,backX,faceY],[backX,topWallY,backX+w,topWallY],[backX+w,topWallY,backX+w,faceY],
+   [faceX+13,topWallY-tab,faceX+w-13,topWallY-tab],[faceX+13,topWallY-tab,faceX+7,topWallY],[faceX+w-7,topWallY,faceX+w-13,topWallY-tab],
+   [backX+13,topWallY-tab,backX+w-13,topWallY-tab],[backX+13,topWallY-tab,backX+7,topWallY],[backX+w-7,topWallY,backX+w-13,topWallY-tab],
+   [faceX,faceY+h,faceX,bottomWallY+d],[faceX+w,bottomWallY,faceX+w,faceY+h],[backX,bottomWallY,backX,faceY+h],[backX+w,faceY+h,backX+w,bottomWallY+d],
+   [faceX,faceY+h,faceX,faceY+h+d],[faceX+7,faceY+h+d,faceX+13,faceY+h+d+tab],[faceX+13,faceY+h+d+tab,faceX+w-13,faceY+h+d+tab],[faceX+w-13,faceY+h+d+tab,faceX+w-7,faceY+h+d],[faceX+w,faceY+h+d,faceX+w,faceY+h],
+   [backX,faceY+h,backX,faceY+h+d],[backX+7,faceY+h+d,backX+13,faceY+h+d+tab],[backX+13,faceY+h+d+tab,backX+w-13,faceY+h+d+tab],[backX+w-13,faceY+h+d+tab,backX+w-7,faceY+h+d],[backX+w,faceY+h+d,backX+w,faceY+h],
+   [netRight,faceY+8,netRightEdge,faceY+14],[netRightEdge,faceY+14,netRightEdge,faceY+h-14],[netRightEdge,faceY+h-14,netRight,faceY+h-8],
+   [faceX+w,topWallY,backX,topWallY],[faceX+w,bottomWallY+d,backX,bottomWallY+d]].forEach(a=>cut(...a));
+  // Fold guides are drawn last so they remain clearly dashed in print.
+  [[faceX,faceY,faceX+w,faceY],[faceX,faceY+h,faceX+w,faceY+h],[faceX+w,faceY,faceX+w,faceY+h],
+   [backX,faceY,backX+w,faceY],[backX,faceY+h,backX+w,faceY+h],[backX,faceY,backX,faceY+h],
+   [faceX,faceY+8,faceX,faceY+h-8],[netRight,faceY+8,netRight,faceY+h-8],
+   [faceX,topWallY,faceX+w,topWallY],[backX,topWallY,backX+w,topWallY],
+   [faceX,faceY+h+d,faceX+w,faceY+h+d],[backX,faceY+h+d,backX+w,faceY+h+d],
+   [faceX,faceY,faceX+w,faceY],[faceX+w,faceY,backX,faceY],[backX,faceY,netRight,faceY],
+   [faceX,faceY+h,faceX+w,faceY+h],[faceX+w,faceY+h,backX,faceY+h],[backX,faceY+h,netRight,faceY+h],
+   [faceX+w,faceY,faceX+w,faceY+h],[backX,faceY,backX,faceY+h],
+   [faceX+7,topWallY,faceX+w-7,topWallY],[backX+7,topWallY,backX+w-7,topWallY],
+   [faceX+7,faceY+h+d,faceX+w-7,faceY+h+d],[backX+7,faceY+h+d,backX+w-7,faceY+h+d]].forEach(a=>fold(...a));
+  // Side information column: finished sample, actual dimensions, directions and line key.
+  const ix=249;
+  svg.appendChild(svgEl('rect',{x:ix,y:7,width:42,height:196,rx:2.5,fill:'#fff8fb',stroke:'#f0cad9','stroke-width':.5}));
+  addText(svg,en?'FINISHED LOOK':'HASIL JADI',ix+21,13,2.8,'bold','#a63f6d');
+  const px=ix+9,py=17,pw=22,ph=27;
+  poly([[px+4,py],[px+pw-3,py],[px+pw,py+4],[px+7,py+4]],'#ffe8bc');
+  poly([[px+pw-3,py],[px+pw+2,py+4],[px+pw+2,py+ph-2],[px+pw,py+ph]],wallBg);
+  svg.appendChild(svgEl('rect',{x:px+4,y:py+4,width:pw-4,height:ph-4,rx:1.5,fill:faceBg,stroke:'#7d4d48','stroke-width':.6}));
+  drawFace(px+4,py+4,pw-4,ph-4,false);
+  svg.appendChild(svgEl('line',{x1:ix+3,y1:47,x2:ix+39,y2:47,stroke:'#e6c4d2','stroke-width':.4}));
+  addText(svg,en?'FINISHED SIZE':'UKURAN JADI',ix+3,53,2.7,'bold','#087e8b','start');
+  addText(svg,`${w} × ${h} × ${d} mm`,ix+3,59,3,'bold','#333','start');
+  addText(svg,`${t.widthText}: ${w} mm`,ix+3,65,2.7,'normal','#333','start');
+  addText(svg,`${t.heightText}: ${h} mm`,ix+3,70,2.7,'normal','#333','start');
+  addText(svg,`${t.thickness}: ${d} mm`,ix+3,75,2.7,'normal','#333','start');
+  svg.appendChild(svgEl('line',{x1:ix+3,y1:79,x2:ix+39,y2:79,stroke:'#e6c4d2','stroke-width':.4}));
+  addText(svg,t.assemble,ix+3,85,2.7,'bold','#087e8b','start');
+  const tipLines=en?['1. Cut solid lines.','2. Fold dashed lines.','3. Glue the tabs.','4. Fill with soft cotton/foam.','5. Seal and enjoy!']:['1. Potong garis utuh.','2. Lipat garis putus-putus.','3. Rekatkan tab.','4. Isi kapas/busa ringan.','5. Tutup dan mainkan!'];
+  tipLines.forEach((line,i)=>addText(svg,line,ix+3,92+i*5,2.45,'normal','#374151','start'));
+  svg.appendChild(svgEl('line',{x1:ix+3,y1:120,x2:ix+39,y2:120,stroke:'#e6c4d2','stroke-width':.4}));
+  addText(svg,en?'LINE KEY':'KETERANGAN GARIS',ix+3,126,2.7,'bold','#087e8b','start');
+  cut(ix+4,133,ix+15,133);addText(svg,en?'Cut':'Potong',ix+18,134,2.5,'normal','#333','start');
+  fold(ix+4,140,ix+15,140);addText(svg,en?'Fold':'Lipat',ix+18,141,2.5,'normal','#333','start');
+  svg.appendChild(svgEl('rect',{x:ix+4,y:146,width:11,height:5,fill:wallBg,stroke:'#222','stroke-width':.35}));addText(svg,en?'Side wall':'Dinding',ix+18,150,2.4,'normal','#333','start');
+  svg.appendChild(svgEl('polygon',{points:`${ix+4},158 ${ix+15},158 ${ix+13},164 ${ix+6},164`,fill:'#fff',stroke:'#222','stroke-width':.4}));addText(svg,en?'Glue tab':'Tab lem',ix+18,162,2.4,'normal','#333','start');
+  svg.appendChild(svgEl('line',{x1:ix+3,y1:169,x2:ix+39,y2:169,stroke:'#e6c4d2','stroke-width':.4}));
+  addText(svg,en?'PRINT TIP':'TIPS CETAK',ix+3,176,2.7,'bold','#087e8b','start');
+  addText(svg,en?'A4 landscape • 100%':'A4 lanskap • 100%',ix+3,182,2.5,'normal','#333','start');
+  addText(svg,en?'Use cardstock.':'Gunakan karton tipis.',ix+3,188,2.45,'normal','#333','start');
+  addText(svg,en?'Adult help for cutting.':'Minta bantuan saat memotong.',ix+3,194,2.1,'normal','#333','start');
+  paper.replaceChildren(svg);statusText.textContent=`${t.success} ${w} × ${h} × ${d} mm.`;return true;
+}
+function envelopePattern(){const t=T(),en=document.getElementById('language').value==='en',size=document.getElementById('envelopeSize').value,theme=document.getElementById('envelopeTheme').value;const dims=size==='small'?[90,60]:size==='large'?[150,100]:[120,80],w=dims[0],h=dims[1],cx=105,cy=143,svg=pageBase(t.envelopeTitle,`${t.widthText}: ${w} mm · ${t.heightText}: ${h} mm`),col=theme==='heart'?'#f5c6d6':theme==='star'?'#f6dc8a':'#cdebd4';svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy-h/2} ${cx+w/2},${cy-h/2} ${cx+w/2+18},${cy} ${cx+w/2},${cy+h/2} ${cx-w/2},${cy+h/2} ${cx-w/2-18},${cy}`,fill:'#fff',stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy-h/2} ${cx},${cy-h/2-35} ${cx+w/2},${cy-h/2}`,fill:col,stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('polygon',{points:`${cx-w/2},${cy+h/2} ${cx},${cy+h/2+28} ${cx+w/2},${cy+h/2}`,fill:'#fff',stroke:'#222','stroke-width':.8}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy-h/2,x2:cx+w/2,y2:cy-h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy+h/2,x2:cx+w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx-w/2,y1:cy-h/2,x2:cx-w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));svg.appendChild(svgEl('line',{x1:cx+w/2,y1:cy-h/2,x2:cx+w/2,y2:cy+h/2,stroke:'#555','stroke-dasharray':'3 2'}));addText(svg,theme==='heart'?'♥':theme==='star'?'★':'✿',cx,cy+7,18,'bold',theme==='heart'?'#d34f80':theme==='star'?'#bd8a18':'#4d9b69');addText(svg,t.foldEnvelope,105,228,3.6);addLegend(svg,t);paper.replaceChildren(svg);statusText.textContent=t.success;return true}
+function generate(){const kind=document.getElementById('product').value;document.body.classList.toggle('page-landscape',kind==='squishy');return kind==='cube'?cubePattern():kind==='squishy'?squishyPattern():envelopePattern()}
+function updateProduct(){const p=document.getElementById('product').value;document.getElementById('cubeOptions').hidden=p!=='cube';document.getElementById('squishyOptions').hidden=p!=='squishy';document.getElementById('envelopeOptions').hidden=p!=='envelope'}
+document.getElementById('language').addEventListener('change',()=>{applyLanguage();generate()});document.getElementById('product').addEventListener('change',()=>{updateProduct();generate()});document.getElementById('make').addEventListener('click',generate);document.getElementById('save').addEventListener('click',()=>{if(generate())window.print()});
+applyLanguage();updateProduct();generate();
+</script>
+</body>
+</html>
