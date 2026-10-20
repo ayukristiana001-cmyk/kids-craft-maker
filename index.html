@@ -740,12 +740,15 @@ function updateProduct(){
 }
 document.getElementById('language').addEventListener('change',()=>{applyLanguage();generate();});
 document.getElementById('product').addEventListener('change',()=>{updateProduct();generate();});
-document.getElementById('make').addEventListener('click',generate);
-document.getElementById('save').addEventListener('click',()=>{
-if(generate()){
-// Pengingat cetak dihilangkan agar langsung membuka jendela cetak.
-window.print();
-}
+
+document.getElementById('make').addEventListener('click', () => {
+  generate();
+});
+
+document.getElementById('save').addEventListener('click', () => {
+  if (generate()) {
+    window.print();
+  }
 });
 applyLanguage();
 updateProduct();
