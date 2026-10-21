@@ -110,8 +110,31 @@ const copy = {
       papercraft: 'template prakarya kertas'
     },
     prompt: (product, theme) => `Buat desain ${product} bertema "${theme}" yang menarik, jelas, dan ramah anak. Buat hasil yang praktis untuk kegiatan prakarya anak dan siap dicetak pada kertas A4. Tampilkan pola datar yang benar-benar dapat dirakit, bukan hanya gambar dekoratif. Sertakan panel yang diperlukan, garis potong utuh, garis lipat putus-putus, tab lem yang cukup, label yang mudah dibaca, ukuran dalam milimeter, serta petunjuk perakitan langkah demi langkah. Pastikan semua bagian muat di halaman A4 dan tidak terpotong. Gunakan kartun lucu dengan warna pastel cerah. Jangan sertakan logo, watermark, nama pembuat, atau tanda tangan.`,
-    squishyPrompt: theme => `Create a cute, child-friendly DIY PAPER SQUISHY template featuring "${theme}". This must be a practical, assemble-able hollow paper pillow craft, not just a character illustration or a flat coloring page. PRINT LAYOUT: A4 landscape, print-ready, high resolution, with safe margins. TEMPLATE PARTS: include a matching front panel and back panel with the same outer silhouette; include side-wall/gusset strips sized to create a shallow 3D pillow (suggest about 20 mm finished depth where the shape allows); divide curved side walls into clearly numbered segments if needed; include generous glue tabs on the side strips and a clearly marked final closing tab/opening. LINE KEY: solid black lines for CUT, dashed lines for FOLD, and distinct labels for each part. DESIGN: make the character immediately recognizable with clear signature features, cheerful pastel colors, bold clean outlines, a cute expressive face, and matching front/back artwork. Add small mm measurements and 4–6 short assembly steps in simple English. Fit all pieces neatly on the page; if they cannot fit legibly on one A4 sheet, use two clearly numbered A4 landscape pages instead of shrinking parts too much. Make the template physically buildable and ensure tabs do not overlap other pieces. Do not include a logo, watermark, creator name, or signature.`
-  },
+    
+squishyPrompt: theme => `Create ONE unique, cute, child-friendly DIY PAPER SQUISHY craft template featuring "${theme}". Generate exactly ONE squishy design per request, never a catalog or multiple designs. The result must be a practical, assemble-able hollow 3D paper pillow, not merely a character illustration or coloring page.
+
+DESIGN STYLE:
+Create an adorable, polished kawaii character inspired by the charm of cute handmade squishy crafts. Use a distinctive silhouette, expressive sparkling eyes, rosy cheeks, tiny decorative details, harmonious cheerful pastel colors, and bold clean outlines. Make the requested theme immediately recognizable. Invent a charming, cohesive design with a visually appealing character face and matching details on the front and back. Avoid generic plain oval faces.
+
+PRINT LAYOUT:
+Use A4 landscape, high resolution, print-ready, with safe margins and a clean white background. Arrange the parts clearly and make them large enough to cut and assemble. If one sheet is insufficient, use additional clearly numbered A4 landscape pages rather than shrinking the parts too much.
+
+REQUIRED TEMPLATE PARTS:
+1. One front panel with the complete character artwork.
+2. One matching back panel with the same outer silhouette.
+3. Side-wall or gusset strips that connect the front and back to form a shallow hollow 3D paper pillow, approximately 20 mm deep where practical.
+4. Sufficient glue tabs, including tabs for curved edges and a clearly identified final closing tab.
+5. Clearly labeled part names and dimensions in millimeters.
+
+CUTTING AND FOLDING:
+Use solid lines for CUT and dashed lines for FOLD. Keep tabs separate from neighboring pieces. Ensure the front and back outlines match the gusset edges. Avoid overlapping pieces, clipped parts, ambiguous connections, and impossible folds. Include a small finished-product preview that does not cover the template.
+
+ASSEMBLY TUTORIAL:
+Include 6–8 numbered steps in simple, child-friendly English: print at 100% scale, cut out the pieces, fold the tabs, connect the side strips, attach the front panel, attach the back panel, leave the final opening until the other seams are secure, then close carefully. Include a short materials list and a simple line key. An adult should assist children with scissors.
+
+FINAL QUALITY:
+The template must be physically buildable with paper, scissors, and glue. Make the instructions readable and the design attractive enough for a children's craft product. Do not include a logo, watermark, creator name, or signature.`
+
   en: {
     tagline: 'Create kids’ craft ideas with help from ChatGPT!',
     settings: 'Craft Settings',
@@ -133,7 +156,30 @@ const copy = {
       papercraft: 'paper craft template'
     },
     prompt: (product, theme) => `Create a cute, child-friendly ${product} featuring "${theme}". Make it practical for a children's craft activity and ready to print on A4 paper. Show a genuinely assemble-able flat template, not just a decorative illustration. Include all necessary panels, solid cut lines, dashed fold lines, sufficient glue tabs, readable labels, dimensions in millimeters, and step-by-step assembly instructions. Ensure every part fits on the A4 page without being clipped. Use a cute cartoon style with cheerful pastel colors. Do not include logos, watermarks, creator names, or signatures.`,
-    squishyPrompt: theme => `Create a cute, child-friendly DIY PAPER SQUISHY template featuring "${theme}". This must be a practical, assemble-able hollow paper pillow craft, not just a character illustration or a flat coloring page. PRINT LAYOUT: A4 landscape, print-ready, high resolution, with safe margins. TEMPLATE PARTS: include a matching front panel and back panel with the same outer silhouette; include side-wall/gusset strips sized to create a shallow 3D pillow (suggest about 20 mm finished depth where the shape allows); divide curved side walls into clearly numbered segments if needed; include generous glue tabs on the side strips and a clearly marked final closing tab/opening. LINE KEY: solid black lines for CUT, dashed lines for FOLD, and distinct labels for each part. DESIGN: make the character immediately recognizable with clear signature features, cheerful pastel colors, bold clean outlines, a cute expressive face, and matching front/back artwork. Add small mm measurements and 4–6 short assembly steps in simple English. Fit all pieces neatly on the page; if they cannot fit legibly on one A4 sheet, use two clearly numbered A4 landscape pages instead of shrinking parts too much. Make the template physically buildable and ensure tabs do not overlap other pieces. Do not include a logo, watermark, creator name, or signature.`
+     
+squishyPrompt: theme => `Create ONE unique, cute, child-friendly DIY PAPER SQUISHY craft template featuring "${theme}". Generate exactly ONE squishy design per request, never a catalog or multiple designs. The result must be a practical, assemble-able hollow 3D paper pillow, not merely a character illustration or coloring page.
+
+DESIGN STYLE:
+Create an adorable, polished kawaii character inspired by the charm of cute handmade squishy crafts. Use a distinctive silhouette, expressive sparkling eyes, rosy cheeks, tiny decorative details, harmonious cheerful pastel colors, and bold clean outlines. Make the requested theme immediately recognizable. Invent a charming, cohesive design with a visually appealing character face and matching details on the front and back. Avoid generic plain oval faces.
+
+PRINT LAYOUT:
+Use A4 landscape, high resolution, print-ready, with safe margins and a clean white background. Arrange the parts clearly and make them large enough to cut and assemble. If one sheet is insufficient, use additional clearly numbered A4 landscape pages rather than shrinking the parts too much.
+
+REQUIRED TEMPLATE PARTS:
+1. One front panel with the complete character artwork.
+2. One matching back panel with the same outer silhouette.
+3. Side-wall or gusset strips that connect the front and back to form a shallow hollow 3D paper pillow, approximately 20 mm deep where practical.
+4. Sufficient glue tabs, including tabs for curved edges and a clearly identified final closing tab.
+5. Clearly labeled part names and dimensions in millimeters.
+
+CUTTING AND FOLDING:
+Use solid lines for CUT and dashed lines for FOLD. Keep tabs separate from neighboring pieces. Ensure the front and back outlines match the gusset edges. Avoid overlapping pieces, clipped parts, ambiguous connections, and impossible folds. Include a small finished-product preview that does not cover the template.
+
+ASSEMBLY TUTORIAL:
+Include 6–8 numbered steps in simple, child-friendly English: print at 100% scale, cut out the pieces, fold the tabs, connect the side strips, attach the front panel, attach the back panel, leave the final opening until the other seams are secure, then close carefully. Include a short materials list and a simple line key. An adult should assist children with scissors.
+
+FINAL QUALITY:
+The template must be physically buildable with paper, scissors, and glue. Make the instructions readable and the design attractive enough for a children's craft product. Do not include a logo, watermark, creator name, or signature.`
   }
 };
 
