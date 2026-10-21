@@ -144,6 +144,20 @@ footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
 
   <button class="primary" id="aiMake">Ayo Buat!</button>
 
+<div id="aiPromptOutput" hidden style="margin-top:16px;">
+  <label for="aiPromptText">Prompt untuk ChatGPT</label>
+  <textarea id="aiPromptText" rows="10"
+    style="width:100%; box-sizing:border-box; margin-top:8px;"
+    readonly></textarea>
+
+  <button type="button" class="secondary" id="aiCopyPrompt">
+    Salin Prompt
+  </button>
+  <p class="note">
+    Buka ChatGPT, tempel prompt yang sudah disalin, lalu tekan Kirim.
+  </p>
+</div>
+
   <p class="note">
     Prompt akan disiapkan untuk ChatGPT. Kamu dapat menyalin
     prompt, lalu mengirimkannya untuk membuat gambar.
@@ -854,22 +868,12 @@ document.getElementById('aiMake').addEventListener('click', async () => {
     ? `Create a polished, child-friendly ${productName} design featuring "${objectName}". Style: ${styles[style]}. Use a clean layout, clear details, and high-resolution artwork. Make the design suitable for a children's craft activity. Do not include logos, watermarks, creator names, or signatures.`
     : `Buat desain ${productName} bertema "${objectName}" yang menarik dan ramah anak. Gaya gambar: ${styles[style]}. Gunakan tata letak yang rapi, detail yang jelas, dan gambar beresolusi tinggi. Buat desain cocok untuk kegiatan prakarya anak. Jangan sertakan logo, watermark, nama pembuat, atau tanda tangan.`;
 
-  window.open('https://chatgpt.com/', '_blank');
-
-  try {
-    await navigator.clipboard.writeText(promptText);
-    alert(lang === 'en'
-      ? 'Prompt copied! Paste it into ChatGPT and press Send.'
-      : 'Prompt berhasil disalin! Tempelkan di ChatGPT, lalu tekan Kirim.');
-  } catch (error) {
-    window.prompt(
-      lang === 'en'
-        ? 'Copy this prompt and paste it into ChatGPT:'
-        : 'Salin prompt ini, lalu tempelkan di ChatGPT:',
-      promptText
-    );
-  }
+window.open(
+  'https://chatgpt.com/?q=' + encodeURIComponent(promptText),
+  '_blank'
+);
 });
+applyLanguage();
 applyLanguage();
 updateProduct();
 paper.replaceChildren();
