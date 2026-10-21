@@ -5,23 +5,145 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Kids Craft Maker</title>
 <style>
-:root{--teal:#087e8b;--ink:#243047;--muted:#64748b;--bg:#f3f7fb;--line:#d7e0ea}
+:root{
+  --ink:#26334d;
+  --muted:#6f7d95;
+  --teal:#087e8b;
+  --mint:#17b8a6;
+  --sky:#63c8f2;
+  --purple:#8b72e8;
+  --pink:#ff8fb3;
+  --yellow:#ffd166;
+  --bg:#f5f8ff;
+  --line:#e2e9f4;
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}
-header{background:var(--teal);color:#fff;padding:22px 16px;text-align:center}
-header h1{margin:0 0 8px;font-size:27px}
-header p{margin:0;font-size:14px}
-main{max-width:720px;margin:20px auto;padding:0 14px}
-.panel{background:#fff;padding:20px;border-radius:16px;margin-bottom:16px;box-shadow:0 3px 14px #17255410}
-h2{font-size:19px;margin:0 0 14px}
-label{display:block;font-weight:bold;margin:14px 0 8px}
-input,select,button{font:inherit}
-input,select{width:100%;padding:13px;border:1px solid #cbd5e1;border-radius:9px;background:#fff;color:var(--ink)}
-button{border:0;border-radius:10px;padding:14px 16px;font-weight:bold;cursor:pointer}
-.primary{background:var(--teal);color:#fff;width:100%;margin-top:18px}
-.note{font-size:13px;color:var(--muted);line-height:1.6}
-.tip{background:#eaf8fa;border-radius:12px;padding:13px;margin-top:16px;font-size:13px;line-height:1.6}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:15px}
+html{min-height:100%;background:var(--bg)}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:"Trebuchet MS",Arial,sans-serif;
+  line-height:1.55;
+  background:
+    radial-gradient(circle at 8% 13%,#d8fbef 0,transparent 25%),
+    radial-gradient(circle at 96% 22%,#eee5ff 0,transparent 27%),
+    radial-gradient(circle at 85% 88%,#fff0f5 0,transparent 24%),
+    var(--bg);
+}
+header{
+  position:relative;
+  overflow:hidden;
+  padding:34px 18px 38px;
+  text-align:center;
+  color:#fff;
+  background:linear-gradient(125deg,#087e8b 0%,#13aaa5 52%,#54cbb1 100%);
+  border-radius:0 0 30px 30px;
+  box-shadow:0 10px 28px #087e8b25;
+}
+header:before,header:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  background:#ffffff18;
+  pointer-events:none;
+}
+header:before{width:190px;height:190px;left:-62px;top:-115px}
+header:after{width:230px;height:230px;right:-80px;bottom:-165px}
+header h1{
+  position:relative;z-index:1;
+  margin:0 0 8px;
+  font-size:clamp(28px,5vw,37px);
+  font-weight:900;
+  letter-spacing:-.8px;
+  text-shadow:0 2px 0 #005d6530;
+}
+header p{
+  position:relative;z-index:1;
+  max-width:440px;
+  margin:0 auto;
+  color:#effffc;
+  font-size:14px;
+}
+main{width:100%;max-width:680px;margin:25px auto;padding:0 15px}
+.panel{
+  padding:24px;
+  margin-bottom:18px;
+  background:#ffffffed;
+  border:1px solid #ffffff;
+  border-radius:24px;
+  box-shadow:0 12px 34px #293d5b12;
+}
+h2{
+  margin:0 0 18px;
+  color:#293754;
+  font-size:22px;
+  line-height:1.3;
+  font-weight:900;
+  letter-spacing:-.4px;
+}
+label{
+  display:block;
+  margin:16px 0 8px;
+  color:#35415c;
+  font-size:14px;
+  font-weight:800;
+}
+input,select,button{width:100%;font:inherit}
+input,select{
+  min-height:50px;
+  padding:12px 14px;
+  color:var(--ink);
+  background:#fcfdff;
+  border:1.5px solid var(--line);
+  border-radius:13px;
+  outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+input:focus,select:focus{
+  border-color:var(--mint);
+  box-shadow:0 0 0 4px #17b8a61c;
+}
+input::placeholder{color:#9aa6b9}
+button{
+  min-height:53px;
+  padding:14px 18px;
+  border:0;
+  border-radius:15px;
+  font-size:16px;
+  font-weight:900;
+  cursor:pointer;
+  transition:transform .15s,box-shadow .15s,filter .15s;
+  -webkit-tap-highlight-color:transparent;
+}
+button:active{transform:scale(.985)}
+.primary{
+  display:block;
+  width:100%;
+  margin-top:22px;
+  color:#fff;
+  background:linear-gradient(110deg,#087e8b 0%,#12aaa5 58%,#35c6a5 100%);
+  box-shadow:0 8px 18px #087e8b30;
+}
+.primary:hover{filter:brightness(1.04);box-shadow:0 10px 22px #087e8b35}
+.note{margin:12px 0;color:var(--muted);font-size:13px;line-height:1.7}
+.tip{
+  margin-top:18px;
+  padding:15px 16px;
+  color:#535477;
+  background:linear-gradient(135deg,#f1edff 0%,#fff0f6 100%);
+  border:1px solid #eee4ff;
+  border-radius:16px;
+  font-size:13px;
+  line-height:1.7;
+}
+.tip strong{color:#7957b7}
+footer{padding:22px 14px;color:#8390a5;text-align:center;font-size:12px}
+@media(max-width:480px){
+  header{padding:29px 16px 33px;border-radius:0 0 24px 24px}
+  main{margin:18px auto;padding:0 12px}
+  .panel{padding:20px 16px;border-radius:20px}
+  h2{font-size:20px}
+}
 </style>
 </head>
 <body>
@@ -54,7 +176,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:15px}
 
     <p class="note" id="helper">Pilih jenis prakarya, tulis tema yang kamu inginkan, lalu tekan tombol di bawah. ChatGPT akan terbuka dengan instruksi untuk membuat desain yang ramah anak.</p>
 
-    <button class="primary" id="makeWithAI">✨ Buat dengan ChatGPT</button>
+    <button class="primary" id="makeWithAI">✨ Ayo Buat</button>
 
     <div class="tip" id="tip">
       <strong>Tips:</strong> Untuk pola yang lebih mudah dirakit, minta desain mencakup ukuran A4, panel depan-belakang, garis potong, garis lipat, tab lem, serta petunjuk perakitan yang jelas.
@@ -75,7 +197,7 @@ const copy = {
     theme: 'Tema atau objek prakarya',
     placeholder: 'Contoh: kucing, unicorn pelangi, dinosaurus',
     helper: 'Pilih jenis prakarya, tulis tema yang kamu inginkan, lalu tekan tombol di bawah. ChatGPT akan terbuka dengan instruksi untuk membuat desain yang ramah anak.',
-    button: '✨ Buat dengan ChatGPT',
+    button: '✨ Ayo Buat',
     tip: 'Tips:',
     tipText: ' Untuk pola yang lebih mudah dirakit, minta desain mencakup ukuran A4, panel depan-belakang, garis potong, garis lipat, tab lem, serta petunjuk perakitan yang jelas.',
     missing: 'Tulis tema atau objek prakarya terlebih dahulu.',
@@ -97,7 +219,7 @@ const copy = {
     theme: 'Craft theme or object',
     placeholder: 'Example: cat, rainbow unicorn, dinosaur',
     helper: 'Choose a craft type, enter your theme, then tap the button below. ChatGPT will open with instructions for a child-friendly design.',
-    button: '✨ Create with ChatGPT',
+    button: '✨ Ayo Buat',
     tip: 'Tip:',
     tipText: ' For an easy-to-assemble template, ask for A4 sizing, front and back panels, cut lines, fold lines, glue tabs, and clear assembly instructions.',
     missing: 'Please enter a craft theme or object first.',
