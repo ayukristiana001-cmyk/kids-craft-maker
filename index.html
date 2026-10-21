@@ -148,8 +148,9 @@ $('makeWithAI').addEventListener('click', () => {
   }
 
   const productKey = $('product').value;
-  const productName = copy[lang].products[productKey];
-  const prompt = copy[lang].prompt(productName, theme);
+  // Keep the app interface in the selected language, but always send the AI prompt in English.
+  const productName = copy.en.products[productKey];
+  const prompt = copy.en.prompt(productName, theme);
   const url = 'https://chatgpt.com/?q=' + encodeURIComponent(prompt);
   const opened = window.open(url, '_blank');
 
