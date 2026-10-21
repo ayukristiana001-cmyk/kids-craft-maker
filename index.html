@@ -127,6 +127,28 @@ footer{text-align:center;color:#64748b;font-size:12px;padding:15px}
     Pilih karakter untuk membuat pola kertas 3D yang dapat dicetak.
   </p>
 </div>
+
+<div class="panel" id="aiPromptOptions">
+  <h2>✨ Buat Desain dengan AI</h2>
+
+  <label for="aiObject">Nama objek yang ingin dibuat</label>
+  <input id="aiObject" type="text"
+    placeholder="Contoh: Unicorn Pelangi, Kucing, Dinosaurus">
+
+  <label for="aiStyle">Gaya gambar</label>
+  <select id="aiStyle">
+    <option value="pastel">Kartun lucu warna pastel</option>
+    <option value="coloring">Hitam-putih untuk diwarnai</option>
+    <option value="3d">Karakter 3D lucu</option>
+  </select>
+
+  <button class="primary" id="aiMake">Ayo Buat!</button>
+
+  <p class="note">
+    Prompt akan disiapkan untuk ChatGPT. Kamu dapat menyalin
+    prompt, lalu mengirimkannya untuk membuat gambar.
+  </p>
+</div>
 <button class="primary" id="make">Buat Pola</button>
 <button class="secondary" id="save">Cetak / Simpan PDF</button>
 <p class="note" id="saveNote">Saat jendela cetak muncul, pilih Simpan sebagai PDF, kertas A4, skala 100%, dan matikan header/footer browser jika tersedia.</p>
@@ -797,6 +819,55 @@ document.getElementById('make').addEventListener('click', () => {
 document.getElementById('save').addEventListener('click', () => {
   if (generate()) {
     window.print();
+  }
+});
+
+document.getElementById('aiMake').addEventListener('click', async () => {
+  const objectName = document.getElementById('aiObject').value.trim();
+  const style = document.getElementById('aiStyle').value;
+  const lang = document.getElementById('language').value;
+
+  if (!objectName) {
+    alert(lang === 'en'
+      ? 'Please enter an object name first.'
+      : 'Masukkan nama objek terlebih dahulu.');
+    return;
+  }
+
+  const productNames = {
+    cube: 'pola kubus dari kertas',
+    squishy: 'DIY squishy kertas',
+    envelope: 'amplop kertas',
+    character: 'karakter 3D dari kertas'
+  };
+
+  const styles = {
+    pastel: 'kartun lucu dengan warna pastel cerah',
+    coloring: 'gambar hitam-putih dengan garis tebal dan bersih untuk diwarnai',
+    '3d': 'karakter 3D lucu dengan tekstur menarik'
+  };
+
+  const product = document.getElementById('product').value;
+  const productName = productNames[product] || 'prakarya kertas';
+
+  const promptText = lang === 'en'
+    ? `Create a polished, child-friendly ${productName} design featuring "${objectName}". Style: ${styles[style]}. Use a clean layout, clear details, and high-resolution artwork. Make the design suitable for a children's craft activity. Do not include logos, watermarks, creator names, or signatures.`
+    : `Buat desain ${productName} bertema "${objectName}" yang menarik dan ramah anak. Gaya gambar: ${styles[style]}. Gunakan tata letak yang rapi, detail yang jelas, dan gambar beresolusi tinggi. Buat desain cocok untuk kegiatan prakarya anak. Jangan sertakan logo, watermark, nama pembuat, atau tanda tangan.`;
+
+  window.open('https://chatgpt.com/', '_blank');
+
+  try {
+    await navigator.clipboard.writeText(promptText);
+    alert(lang === 'en'
+      ? 'Prompt copied! Paste it into ChatGPT and press Send.'
+      : 'Prompt berhasil disalin! Tempelkan di ChatGPT, lalu tekan Kirim.');
+  } catch (error) {
+    window.prompt(
+      lang === 'en'
+        ? 'Copy this prompt and paste it into ChatGPT:'
+        : 'Salin prompt ini, lalu tempelkan di ChatGPT:',
+      promptText
+    );
   }
 });
 applyLanguage();
