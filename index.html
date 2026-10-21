@@ -462,6 +462,12 @@ const ur=Math.min(ww*.19,hh*.20);
 // Rambut pelangi di belakang kepala
 svg.appendChild(svgEl('path',{d:`M ${cx-ww*.27} ${uy+hh*.10} Q ${cx-ww*.38} ${uy-hh*.12} ${cx-ww*.16} ${uy-hh*.22} Q ${cx} ${uy-hh*.30} ${cx+ww*.16} ${uy-hh*.22} Q ${cx+ww*.38} ${uy-hh*.12} ${cx+ww*.27} ${uy+hh*.10}`,fill:'#c8b5f2',stroke:'#8064a8','stroke-width':1.2}));
 
+ // Lengkungan surai pelangi pastel
+svg.appendChild(svgEl('path',{d:`M ${cx-ww*.25} ${uy+hh*.18} Q ${cx-ww*.38} ${uy+hh*.02} ${cx-ww*.25} ${uy-hh*.10}`,fill:'none',stroke:'#f49ac2','stroke-width':ww*.055,'stroke-linecap':'round'}));
+svg.appendChild(svgEl('path',{d:`M ${cx-ww*.18} ${uy+hh*.15} Q ${cx-ww*.28} ${uy+.0*hh} ${cx-ww*.14} ${uy-hh*.15}`,fill:'none',stroke:'#ffe17a','stroke-width':ww*.055,'stroke-linecap':'round'}));
+svg.appendChild(svgEl('path',{d:`M ${cx+ww*.18} ${uy+hh*.15} Q ${cx+ww*.28} ${uy+.0*hh} ${cx+ww*.14} ${uy-hh*.15}`,fill:'none',stroke:'#8edcf5','stroke-width':ww*.055,'stroke-linecap':'round'}));
+svg.appendChild(svgEl('path',{d:`M ${cx+ww*.25} ${uy+hh*.18} Q ${cx+ww*.38} ${uy+hh*.02} ${cx+ww*.25} ${uy-hh*.10}`,fill:'none',stroke:'#c8b5f2','stroke-width':ww*.055,'stroke-linecap':'round'}));
+
 // Tanduk emas
 svg.appendChild(svgEl('path',{d:`M ${cx-ur*.65} ${uy-ur*.05} L ${cx} ${uy-ur*1.65} L ${cx+ur*.65} ${uy-ur*.05} Z`,fill:'#ffd76a',stroke:'#8064a8','stroke-width':1}));
 
