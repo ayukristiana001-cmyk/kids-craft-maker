@@ -456,16 +456,31 @@ blush(cx-ww*.25,hy+hh2*.62,ww*.05,hh*.023);blush(cx+ww*.25,hy+hh2*.62,ww*.05,hh*
 svg.appendChild(svgEl('path',{d:`M ${cx-ww*.035} ${hy+hh2*.59} Q ${cx} ${hy+hh2*.70} ${cx+ww*.035} ${hy+hh2*.59}`,fill:'none',stroke:'#6f4b5b','stroke-width':.8}));
 svg.appendChild(svgEl('path',{d:`M ${cx} ${hy-hh2*.18} Q ${cx-ww*.12} ${hy-hh2*.34} ${cx-ww*.12} ${hy-hh2*.16} Q ${cx-ww*.08} ${hy} ${cx} ${hy-hh2*.18} Q ${cx+ww*.12} ${hy-hh2*.34} ${cx+ww*.12} ${hy-hh2*.16} Q ${cx+ww*.08} ${hy} ${cx} ${hy-hh2*.18} Z`,fill:'#ed77a0',stroke:'#813f60','stroke-width':.5}));
 }else if(kind==='unicorn'){
-const uy=top+hh*.37,ur=Math.min(ww*.19,hh*.20);
+const uy=top+hh*.37;
+const ur=Math.min(ww*.19,hh*.20);
+
+// Rambut pelangi di belakang kepala
+svg.appendChild(svgEl('path',{d:`M ${cx-ww*.27} ${uy+hh*.10} Q ${cx-ww*.38} ${uy-hh*.12} ${cx-ww*.16} ${uy-hh*.22} Q ${cx} ${uy-hh*.30} ${cx+ww*.16} ${uy-hh*.22} Q ${cx+ww*.38} ${uy-hh*.12} ${cx+ww*.27} ${uy+hh*.10}`,fill:'#c8b5f2',stroke:'#8064a8','stroke-width':1.2}));
+
+// Tanduk emas
+svg.appendChild(svgEl('path',{d:`M ${cx-ur*.65} ${uy-ur*.05} L ${cx} ${uy-ur*1.65} L ${cx+ur*.65} ${uy-ur*.05} Z`,fill:'#ffd76a',stroke:'#8064a8','stroke-width':1}));
+
+// Telinga kiri dan kanan
+svg.appendChild(svgEl('path',{d:`M ${cx-ww*.20} ${uy+hh*.02} L ${cx-ww*.29} ${uy-hh*.16} Q ${cx-ww*.13} ${uy-hh*.12} ${cx-ww*.10} ${uy+hh*.05} Z`,fill:'#fffaff',stroke:'#8064a8','stroke-width':1}));
+svg.appendChild(svgEl('path',{d:`M ${cx+ww*.20} ${uy+hh*.02} L ${cx+ww*.29} ${uy-hh*.16} Q ${cx+ww*.13} ${uy-hh*.12} ${cx+ww*.10} ${uy+hh*.05} Z`,fill:'#fffaff',stroke:'#8064a8','stroke-width':1}));
+
+// Wajah
 svg.appendChild(svgEl('ellipse',{cx:cx,cy:uy+hh*.22,rx:ww*.29,ry:hh*.30,fill:'#fffaff',stroke:'#8064a8','stroke-width':1.2}));
-svg.appendChild(svgEl('path',{d:"M ${cx-ur*.65} ${uy-ur*.15} L ${cx} ${uy-ur*1.65} L ${cx+ur*.65} ${uy-ur*.15} Z",fill:'#ffd76a',stroke:'#8064a8','stroke-width':1}));
-svg.appendChild(svgEl('path',{d:"M ${cx-ww*.23} ${uy+hh*.05} Q ${cx-ww*.32} ${uy-hh*.13} ${cx-ww*.20} ${uy-hh*.18} Q ${cx-ww*.12} ${uy-hh*.12} ${cx-ww*.10} ${uy+hh*.02}",fill:'#f49ac2',stroke:'#8064a8','stroke-width':.8}));
-svg.appendChild(svgEl('path',{d:"M ${cx+ww*.23} ${uy+hh*.05} Q ${cx+ww*.32} ${uy-hh*.13} ${cx+ww*.20} ${uy-hh*.18} Q ${cx+ww*.12} ${uy-hh*.12} ${cx+ww*.10} ${uy+hh*.02}",fill:'#f49ac2',stroke:'#8064a8','stroke-width':.8}));
-svg.appendChild(svgEl('path',{d:"M ${cx-ww*.22} ${uy+hh*.06} Q ${cx} ${uy-hh*.02} ${cx+ww*.22} ${uy+hh*.06}",fill:'none',stroke:'#c8b5f2','stroke-width':ww*.09}));
-eye(cx-ww*.10,uy+hh*.20,ww*.025);eye(cx+ww*.10,uy+hh*.20,ww*.025);
-blush(cx-ww*.19,uy+hh*.29,ww*.045,hh*.025);blush(cx+ww*.19,uy+hh*.29,ww*.045,hh*.025);
-svg.appendChild(svgEl('path',{d:"M ${cx-ww*.06} ${uy+hh*.28} Q ${cx} ${uy+hh*.34} ${cx+ww*.06} ${uy+hh*.28}",fill:'none',stroke:'#8064a8','stroke-width':1}));
-svg.appendChild(svgEl('path',{d:"M ${cx-ww*.25} ${uy+hh*.42} Q ${cx-ww*.12} ${uy+hh*.55} ${cx} ${uy+hh*.42} Q ${cx+ww*.12} ${uy+hh*.55} ${cx+ww*.25} ${uy+hh*.42}",fill:'none',stroke:'#f49ac2','stroke-width':ww*.07}));}else{
+
+// Poni warna-warni
+svg.appendChild(svgEl('path',{d:`M ${cx-ww*.23} ${uy+hh*.04} Q ${cx-ww*.20} ${uy-hh*.16} ${cx-ww*.08} ${uy-hh*.08} Q ${cx+ww*.02} ${uy-hh*.20} ${cx+ww*.10} ${uy-hh*.07} Q ${cx+ww*.20} ${uy-hh*.16} ${cx+ww*.23} ${uy+hh*.04} Q ${cx} ${uy-hh*.02} ${cx-ww*.23} ${uy+hh*.04} Z`,fill:'#f49ac2',stroke:'#8064a8','stroke-width':.8}));
+
+// Mata, pipi, dan senyum
+eye(cx-ww*.10,uy+hh*.20,ww*.025);
+eye(cx+ww*.10,uy+hh*.20,ww*.025);
+blush(cx-ww*.19,uy+hh*.29,ww*.045,hh*.025);
+blush(cx+ww*.19,uy+hh*.29,ww*.045,hh*.025);
+svg.appendChild(svgEl('path',{d:`M ${cx-ww*.06} ${uy+hh*.28} Q ${cx} ${uy+hh*.35} ${cx+ww*.06} ${uy+hh*.28}`,fill:'none',stroke:'#8064a8','stroke-width':1}));
 const dcx=cx,dcy=top+hh*.53,ro=Math.min(ww*.34,hh*.25),ri=ro*.43;
 svg.appendChild(svgEl('circle',{cx:dcx,cy:dcy,r:ro,fill:'#d99147',stroke:'#85502b','stroke-width':.8}));
 svg.appendChild(svgEl('path',{d:`M ${dcx-ro*.83} ${dcy-ro*.15} Q ${dcx-ro*.78} ${dcy-ro*.9} ${dcx-ro*.27} ${dcy-ro*.81} Q ${dcx} ${dcy-ro*1.02} ${dcx+ro*.26} ${dcy-ro*.82} Q ${dcx+ro*.82} ${dcy-ro*.92} ${dcx+ro*.85} ${dcy-ro*.14} L ${dcx+ro*.62} ${dcy+ro*.35} Q ${dcx+ro*.38} ${dcy+ro*.62} ${dcx+ro*.20} ${dcy+ro*.32} Q ${dcx} ${dcy+ro*.65} ${dcx-ro*.22} ${dcy+ro*.36} Q ${dcx-ro*.55} ${dcy+ro*.62} ${dcx-ro*.68} ${dcy+ro*.27} Z`,fill:'#ff9fbc',stroke:'#9e4f70','stroke-width':.7}));
