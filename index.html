@@ -24,7 +24,7 @@ label{display:block;margin:16px 0 8px;color:#35415c;font-size:14px;font-weight:8
 input,select,button{width:100%;font:inherit}input,select{min-height:50px;padding:12px 14px;color:var(--ink);background:#fcfdff;border:1.5px solid var(--line);border-radius:13px;outline:none;transition:border-color .2s,box-shadow .2s}input:focus,select:focus{border-color:var(--mint);box-shadow:0 0 0 4px #17b8a61c}input::placeholder{color:#9aa6b9}
 button{min-height:53px;padding:14px 18px;border:0;border-radius:15px;font-size:16px;font-weight:900;cursor:pointer;transition:transform .15s,box-shadow .15s,filter .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}button:focus-visible{outline:3px solid #8b72e8;outline-offset:3px}button:active{transform:scale(.985)}
 .primary{display:block;width:100%;margin-top:22px;color:#fff;background:linear-gradient(110deg,#087e8b 0%,#12aaa5 58%,#35c6a5 100%);box-shadow:0 8px 18px #087e8b30}.primary:hover{filter:brightness(1.04);box-shadow:0 10px 22px #087e8b35}
-.note{margin:12px 0;color:var(--muted);font-size:13px;line-height:1.7}.tip{margin-top:18px;padding:15px 16px;color:#535477;background:linear-gradient(135deg,#f1edff 0%,#fff0f6 100%);border:1px solid #eee4ff;border-radius:16px;font-size:13px;line-height:1.7}.tip strong{color:#7957b7}
+.note{margin:12px 0;color:var(--muted);font-size:13px;line-height:1.7}.tip{margin-top:18px;padding:15px 16px;color:#535477;background:linear-gradient(135deg,#f1edff 0%,#fff0f6 100%);border:1px solid #eee4ff;border-radius:16px;font-size:13px;line-height:1.7}.tip strong{color:#7957b7}.squishy-tip{background:linear-gradient(135deg,#e9fbf5 0%,#eef5ff 100%);border-color:#d6f2e9}.squishy-tip strong{color:#087e8b}.squishy-tip[hidden]{display:none}
 footer{padding:22px 14px;color:#8390a5;text-align:center;font-size:12px}
 /* HP: lebih sedikit hiasan, ukurannya kecil, dan ditempatkan di tepi layar. */
 @media(max-width:600px){.craft-decor span{width:34px;height:34px;border-radius:12px;font-size:19px;opacity:.26}.craft-decor .d1{top:34%;left:-8px}.craft-decor .d2{top:62%;right:-8px}.craft-decor .d3{top:86%;left:-9px}.craft-decor .d4{top:12%;right:-9px}.craft-decor .d5,.craft-decor .d6,.craft-decor .d7,.craft-decor .d8,.craft-decor .d9{display:none}header{border-radius:0 0 24px 24px}main{margin:18px auto}.panel{border-radius:20px}}
@@ -78,6 +78,9 @@ footer{padding:22px 14px;color:#8390a5;text-align:center;font-size:12px}
     <div class="tip" id="tip">
       <strong>Tips:</strong> Untuk pola yang lebih mudah dirakit, minta desain mencakup ukuran A4, panel depan-belakang, garis potong, garis lipat, tab lem, serta petunjuk perakitan yang jelas.
     </div>
+    <div class="tip squishy-tip" id="squishyTip" aria-live="polite">
+      <strong>Tips khusus Squishy:</strong> Gunakan bentuk karakter yang mudah dikenali, panel depan dan belakang yang cocok, strip sisi untuk memberi volume, tab lem yang cukup, serta garis potong dan lipat yang mudah dibedakan.
+    </div>
   </section>
 </main>
 <footer>Kids Craft Maker · Ide prakarya anak</footer>
@@ -106,7 +109,8 @@ const copy = {
       character: 'pola karakter 3D dari kertas',
       papercraft: 'template prakarya kertas'
     },
-    prompt: (product, theme) => `Buat desain ${product} bertema "${theme}" yang menarik, jelas, dan ramah anak. Buat hasil yang praktis untuk kegiatan prakarya anak dan siap dicetak pada kertas A4. Tampilkan pola datar yang benar-benar dapat dirakit, bukan hanya gambar dekoratif. Sertakan panel yang diperlukan, garis potong utuh, garis lipat putus-putus, tab lem yang cukup, label yang mudah dibaca, ukuran dalam milimeter, serta petunjuk perakitan langkah demi langkah. Pastikan semua bagian muat di halaman A4 dan tidak terpotong. Gunakan kartun lucu dengan warna pastel cerah. Jangan sertakan logo, watermark, nama pembuat, atau tanda tangan.`
+    prompt: (product, theme) => `Buat desain ${product} bertema "${theme}" yang menarik, jelas, dan ramah anak. Buat hasil yang praktis untuk kegiatan prakarya anak dan siap dicetak pada kertas A4. Tampilkan pola datar yang benar-benar dapat dirakit, bukan hanya gambar dekoratif. Sertakan panel yang diperlukan, garis potong utuh, garis lipat putus-putus, tab lem yang cukup, label yang mudah dibaca, ukuran dalam milimeter, serta petunjuk perakitan langkah demi langkah. Pastikan semua bagian muat di halaman A4 dan tidak terpotong. Gunakan kartun lucu dengan warna pastel cerah. Jangan sertakan logo, watermark, nama pembuat, atau tanda tangan.`,
+    squishyPrompt: theme => `Create a cute, child-friendly DIY PAPER SQUISHY template featuring "${theme}". This must be a practical, assemble-able hollow paper pillow craft, not just a character illustration or a flat coloring page. PRINT LAYOUT: A4 landscape, print-ready, high resolution, with safe margins. TEMPLATE PARTS: include a matching front panel and back panel with the same outer silhouette; include side-wall/gusset strips sized to create a shallow 3D pillow (suggest about 20 mm finished depth where the shape allows); divide curved side walls into clearly numbered segments if needed; include generous glue tabs on the side strips and a clearly marked final closing tab/opening. LINE KEY: solid black lines for CUT, dashed lines for FOLD, and distinct labels for each part. DESIGN: make the character immediately recognizable with clear signature features, cheerful pastel colors, bold clean outlines, a cute expressive face, and matching front/back artwork. Add small mm measurements and 4–6 short assembly steps in simple English. Fit all pieces neatly on the page; if they cannot fit legibly on one A4 sheet, use two clearly numbered A4 landscape pages instead of shrinking parts too much. Make the template physically buildable and ensure tabs do not overlap other pieces. Do not include a logo, watermark, creator name, or signature.`
   },
   en: {
     tagline: 'Create kids’ craft ideas with help from ChatGPT!',
@@ -128,7 +132,8 @@ const copy = {
       character: '3D paper character template',
       papercraft: 'paper craft template'
     },
-    prompt: (product, theme) => `Create a cute, child-friendly ${product} featuring "${theme}". Make it practical for a children's craft activity and ready to print on A4 paper. Show a genuinely assemble-able flat template, not just a decorative illustration. Include all necessary panels, solid cut lines, dashed fold lines, sufficient glue tabs, readable labels, dimensions in millimeters, and step-by-step assembly instructions. Ensure every part fits on the A4 page without being clipped. Use a cute cartoon style with cheerful pastel colors. Do not include logos, watermarks, creator names, or signatures.`
+    prompt: (product, theme) => `Create a cute, child-friendly ${product} featuring "${theme}". Make it practical for a children's craft activity and ready to print on A4 paper. Show a genuinely assemble-able flat template, not just a decorative illustration. Include all necessary panels, solid cut lines, dashed fold lines, sufficient glue tabs, readable labels, dimensions in millimeters, and step-by-step assembly instructions. Ensure every part fits on the A4 page without being clipped. Use a cute cartoon style with cheerful pastel colors. Do not include logos, watermarks, creator names, or signatures.`,
+    squishyPrompt: theme => `Create a cute, child-friendly DIY PAPER SQUISHY template featuring "${theme}". This must be a practical, assemble-able hollow paper pillow craft, not just a character illustration or a flat coloring page. PRINT LAYOUT: A4 landscape, print-ready, high resolution, with safe margins. TEMPLATE PARTS: include a matching front panel and back panel with the same outer silhouette; include side-wall/gusset strips sized to create a shallow 3D pillow (suggest about 20 mm finished depth where the shape allows); divide curved side walls into clearly numbered segments if needed; include generous glue tabs on the side strips and a clearly marked final closing tab/opening. LINE KEY: solid black lines for CUT, dashed lines for FOLD, and distinct labels for each part. DESIGN: make the character immediately recognizable with clear signature features, cheerful pastel colors, bold clean outlines, a cute expressive face, and matching front/back artwork. Add small mm measurements and 4–6 short assembly steps in simple English. Fit all pieces neatly on the page; if they cannot fit legibly on one A4 sheet, use two clearly numbered A4 landscape pages instead of shrinking parts too much. Make the template physically buildable and ensure tabs do not overlap other pieces. Do not include a logo, watermark, creator name, or signature.`
   }
 };
 
@@ -148,6 +153,10 @@ function applyLanguage() {
   const strong = document.createElement('strong');
   strong.textContent = t.tip;
   $('tip').append(strong, document.createTextNode(t.tipText));
+  $('squishyTip').innerHTML = lang === 'en'
+    ? '<strong>Squishy tip:</strong> Use a recognizable character silhouette, matching front and back panels, side strips for 3D depth, enough glue tabs, and clearly different cut/fold lines.'
+    : '<strong>Tips khusus Squishy:</strong> Gunakan bentuk karakter yang mudah dikenali, panel depan dan belakang yang cocok, strip sisi untuk memberi volume, tab lem yang cukup, serta garis potong dan lipat yang mudah dibedakan.';
+  updateProductTips();
   const options = $('product').options;
   const labels = lang === 'en'
     ? ['DIY Paper Squishy', 'Creative Envelope', 'Paper Cube', 'Paper Rectangular Prism', '3D Paper Character', 'Other Paper Craft']
@@ -155,7 +164,12 @@ function applyLanguage() {
   Array.from(options).forEach((option, i) => option.textContent = labels[i]);
 }
 
+function updateProductTips() {
+  $('squishyTip').hidden = $('product').value !== 'squishy';
+}
+
 $('language').addEventListener('change', applyLanguage);
+$('product').addEventListener('change', updateProductTips);
 
 $('makeWithAI').addEventListener('click', () => {
   const lang = $('language').value;
@@ -169,7 +183,10 @@ $('makeWithAI').addEventListener('click', () => {
   const productKey = $('product').value;
   // Keep the app interface in the selected language, but always send the AI prompt in English.
   const productName = copy.en.products[productKey];
-  const prompt = copy.en.prompt(productName, theme);
+  // Squishy gets a more specific buildable template prompt; other craft types keep their existing prompt.
+  const prompt = productKey === 'squishy'
+    ? copy.en.squishyPrompt(theme)
+    : copy.en.prompt(productName, theme);
   const url = 'https://chatgpt.com/?q=' + encodeURIComponent(prompt);
   const opened = window.open(url, '_blank');
 
