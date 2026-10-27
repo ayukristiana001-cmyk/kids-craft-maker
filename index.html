@@ -66,9 +66,26 @@ footer{padding:22px 14px;color:#8390a5;text-align:center;font-size:12px}
       <option value="cuboid">Balok Kertas</option>
       <option value="character">Karakter 3D dari Kertas</option>
       <option value="papercraft">Paper craft lainnya</option>
+    
     </select>
 
+    <div id="envelopeOptions" hidden>
+      <label for="envelopeShape" id="envelopeShapeLabel">Bentuk amplop</label>
+      <select id="envelopeShape">
+        <option value="classic">Amplop Klasik</option>
+        <option value="lebaran">Amplop Lebaran (Panjang)</option>
+      </select>
+
+      <label for="envelopeSize" id="envelopeSizeLabel">Ukuran amplop</label>
+      <select id="envelopeSize">
+        <option value="mini">Mini</option>
+        <option value="medium" selected>Sedang</option>
+        <option value="large">Besar</option>
+      </select>
+    </div>
+
     <label for="theme" id="themeLabel">Tema atau objek prakarya</label>
+
     <input id="theme" type="text" placeholder="Contoh: kucing, unicorn pelangi, dinosaurus">
 
     <p class="note" id="helper">Pilih jenis prakarya, tulis tema yang kamu inginkan, lalu tekan tombol di bawah. ChatGPT akan terbuka dengan instruksi untuk membuat desain yang ramah anak.</p>
@@ -162,18 +179,41 @@ function applyLanguage() {
     ? ['DIY Paper Squishy', 'Creative Envelope', 'Paper Cube', 'Paper Rectangular Prism', '3D Paper Character', 'Other Paper Craft']
     : ['DIY Squishy Kertas', 'Amplop Kreatif', 'Kubus Kertas', 'Balok Kertas', 'Karakter 3D dari Kertas', 'Paper craft lainnya'];
   Array.from(options).forEach((option, i) => option.textContent = labels[i]);
+
+  $('envelopeShapeLabel').textContent =
+    lang === 'id' ? 'Bentuk amplop' : 'Envelope shape';
+
+  $('envelopeSizeLabel').textContent =
+    lang === 'id' ? 'Ukuran amplop' : 'Envelope size';
+
+  $('envelopeShape').options[0].text =
+    lang === 'id' ? 'Amplop Klasik' : 'Classic Envelope';
+
+  $('envelopeShape').options[1].text =
+    lang === 'id' ? 'Amplop Lebaran (Panjang)' : 'Long Eid Envelope';
+
+  $('envelopeSize').options[0].text = 'Mini';
+  $('envelopeSize').options[1].text =
+    lang === 'id' ? 'Sedang' : 'Medium';
+  $('envelopeSize').options[2].text =
+    lang === 'id' ? 'Besar' : 'Large';
+
 }
+
 
 function updateProductTips() {
   $('squishyTip').hidden = $('product').value !== 'squishy';
+  $('envelopeOptions').hidden = $('product').value !== 'envelope';
 }
 
 $('language').addEventListener('change', applyLanguage);
 $('product').addEventListener('change', updateProductTips);
 
+
 $('makeWithAI').addEventListener('click', () => {
   const lang = $('language').value;
   const theme = $('theme').value.trim();
+
   if (!theme) {
     alert(copy[lang].missing);
     $('theme').focus();
@@ -181,17 +221,55 @@ $('makeWithAI').addEventListener('click', () => {
   }
 
   const productKey = $('product').value;
-  // The selected language controls the visible text requested for DIY Squishy.
-  const productName = copy.en.products[productKey];
-  // Squishy gets a more specific buildable template prompt; other craft types keep their existing prompt.
-  const prompt = productKey === 'squishy'
-    ? copy[lang].squishyPrompt(theme, lang)
-    : copy.en.prompt(productName, theme);
+  let prompt;
+
+  if (productKey === 'envelope') {
+    const shape = $('envelopeShape').value;
+    const size = $('envelopeSize').value;
+
+    const sizes = {
+      classic: {
+        mini: '90 x 60 mm',
+        medium: '120 x 80 mm',
+        large: '150 x 100 mm'
+      },
+      lebaran: {
+        mini: '110 x 55 mm',
+        medium: '160 x 80 mm',
+        large: '200 x 100 mm'
+      }
+    };
+
+    const shapeID = shape === 'lebaran'
+      ? 'amplop panjang seperti amplop uang Lebaran, badan memanjang dan tutup atas pendek'
+      : 'amplop klasik dengan badan persegi panjang dan lipatan penutup yang jelas';
+
+    const shapeEN = shape === 'lebaran'
+      ? 'a long Eid money envelope with an elongated body and a short top flap'
+      : 'a classic envelope with a rectangular body and a clear closing flap';
+
+    const sizeName = {
+      mini: lang === 'id' ? 'Mini' : 'Mini',
+      medium: lang === 'id' ? 'Sedang' : 'Medium',
+      large: lang === 'id' ? 'Besar' : 'Large'
+    }[size];
+
+    const dimensions = sizes[shape][size];
+
+    prompt = lang === 'id'
+      ? `Buat template prakarya amplop kertas bertema "${theme}". Bentuk: ${shapeID}. Ukuran pilihan: ${sizeName}, dengan ukuran hasil jadi sekitar ${dimensions}. Buat pola datar yang benar-benar bisa dirakit pada kertas A4, dengan badan amplop, tutup atas, lipatan samping dan bawah bila diperlukan, tab lem yang cukup, garis potong utuh, garis lipat putus-putus, ukuran dalam milimeter, serta petunjuk perakitan berbahasa Indonesia. Pertahankan bentuk dan proporsi sesuai pilihan. Gunakan ilustrasi lucu ramah anak dan warna pastel. Pastikan seluruh pola muat di halaman, tidak terpotong, dan dapat dirakit. Jangan sertakan logo, watermark, atau nama pembuat.`
+      : `Create a child-friendly paper envelope craft template featuring "${theme}". Shape: ${shapeEN}. Selected size: ${sizeName}, with finished dimensions approximately ${dimensions}. Create a genuinely assemble-able flat template on A4 paper, including the envelope body, top flap, necessary side and bottom folds, sufficient glue tabs, solid cut lines, dashed fold lines, measurements in millimeters, and English assembly instructions. Keep the proportions consistent with the selected shape. Use cute illustrations and cheerful pastel colors. Ensure the entire template fits on the page, is not clipped, and can be assembled. Do not include logos, watermarks, or creator names.`;
+  } else {
+    const productName = copy.en.products[productKey];
+    prompt = productKey === 'squishy'
+      ? copy[lang].squishyPrompt(theme, lang)
+      : copy.en.prompt(productName, theme);
+  }
+
   const url = 'https://chatgpt.com/?q=' + encodeURIComponent(prompt);
   const opened = window.open(url, '_blank');
 
   if (!opened) {
-    // Fallback for browsers that block a new tab.
     window.location.href = url;
   }
 });
