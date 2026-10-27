@@ -9,6 +9,7 @@
 *{box-sizing:border-box}
 html{min-height:100%;background:var(--bg);scroll-behavior:smooth}
 body{margin:0;min-height:100vh;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Arial,sans-serif;line-height:1.55;overflow-x:hidden;background:radial-gradient(ellipse at 8% 12%,#d8fbef 0,transparent 28%),radial-gradient(ellipse at 96% 25%,#eee5ff 0,transparent 28%),radial-gradient(ellipse at 85% 90%,#fff0f5 0,transparent 26%),var(--bg)}
+/* Dekorasi berada pada lapisan terpisah; tidak mengambil ruang layout dan tidak menangkap sentuhan. */
 .craft-decor{position:fixed;inset:0;overflow:hidden;pointer-events:none;user-select:none;z-index:0;contain:layout paint}
 .craft-decor span{position:absolute;display:grid;place-items:center;width:clamp(38px,4.5vw,58px);height:clamp(38px,4.5vw,58px);border:2px solid #ffffffd9;border-radius:18px;background:#ffffffa8;box-shadow:0 7px 20px #34445c0b;font-size:clamp(21px,2.5vw,31px);opacity:.48;transform:rotate(var(--tilt,-8deg))}
 .craft-decor .d1{top:24%;left:max(8px,calc(50% - 560px));--tilt:-12deg}.craft-decor .d2{top:18%;right:max(8px,calc(50% - 560px));--tilt:10deg}.craft-decor .d3{top:51%;left:max(8px,calc(50% - 570px));--tilt:8deg}.craft-decor .d4{top:57%;right:max(8px,calc(50% - 570px));--tilt:-9deg}.craft-decor .d5{top:78%;left:max(8px,calc(50% - 550px));--tilt:11deg}.craft-decor .d6{top:82%;right:max(8px,calc(50% - 550px));--tilt:-11deg}.craft-decor .d7{top:38%;left:7%;--tilt:-5deg}.craft-decor .d8{top:39%;right:7%;--tilt:8deg}.craft-decor .d9{top:8%;left:17%;--tilt:12deg}
@@ -25,6 +26,7 @@ button{min-height:53px;padding:14px 18px;border:0;border-radius:15px;font-size:1
 .primary{display:block;width:100%;margin-top:22px;color:#fff;background:linear-gradient(110deg,#087e8b 0%,#12aaa5 58%,#35c6a5 100%);box-shadow:0 8px 18px #087e8b30}.primary:hover{filter:brightness(1.04);box-shadow:0 10px 22px #087e8b35}
 .note{margin:12px 0;color:var(--muted);font-size:13px;line-height:1.7}.tip{margin-top:18px;padding:15px 16px;color:#535477;background:linear-gradient(135deg,#f1edff 0%,#fff0f6 100%);border:1px solid #eee4ff;border-radius:16px;font-size:13px;line-height:1.7}.tip strong{color:#7957b7}.squishy-tip{background:linear-gradient(135deg,#e9fbf5 0%,#eef5ff 100%);border-color:#d6f2e9}.squishy-tip strong{color:#087e8b}.squishy-tip[hidden]{display:none}
 footer{padding:22px 14px;color:#8390a5;text-align:center;font-size:12px}
+/* HP: lebih sedikit hiasan, ukurannya kecil, dan ditempatkan di tepi layar. */
 @media(max-width:600px){.craft-decor span{width:34px;height:34px;border-radius:12px;font-size:19px;opacity:.26}.craft-decor .d1{top:34%;left:-8px}.craft-decor .d2{top:62%;right:-8px}.craft-decor .d3{top:86%;left:-9px}.craft-decor .d4{top:12%;right:-9px}.craft-decor .d5,.craft-decor .d6,.craft-decor .d7,.craft-decor .d8,.craft-decor .d9{display:none}header{border-radius:0 0 24px 24px}main{margin:18px auto}.panel{border-radius:20px}}
 @media(max-width:360px){.craft-decor span{opacity:.17}.panel{padding:17px 14px}header h1{letter-spacing:-.5px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
@@ -32,82 +34,168 @@ footer{padding:22px 14px;color:#8390a5;text-align:center;font-size:12px}
 </head>
 <body>
 <div class="craft-decor" aria-hidden="true">
-  <span class="d1">✂️</span><span class="d2">🌈</span><span class="d3">🐼</span><span class="d4">📄</span><span class="d5">🦄</span><span class="d6">🦖</span><span class="d7">🦋</span><span class="d8">🦢</span><span class="d9">⭐</span>
+  <span class="d1">✂️</span>
+  <span class="d2">🌈</span>
+  <span class="d3">🐼</span>
+  <span class="d4">📄</span>
+  <span class="d5">🦄</span>
+  <span class="d6">🦖</span>
+  <span class="d7">🦋</span>
+  <span class="d8">🦢</span>
+  <span class="d9">⭐</span>
 </div>
-<header><h1>✂️ Kids Craft Maker</h1><p id="tagline">Buat ide prakarya anak dengan bantuan ChatGPT!</p></header>
-<main><section class="panel">
-<h2 id="settingsTitle">Pengaturan Prakarya</h2>
-<label for="language" id="languageLabel">Bahasa hasil desain</label>
-<select id="language"><option value="id">Bahasa Indonesia</option><option value="en">English</option></select>
-<label for="product" id="productLabel">Jenis prakarya</label>
-<select id="product"><option value="squishy">DIY Squishy Kertas</option><option value="envelope">Amplop Kreatif</option><option value="cube">Kubus Kertas</option><option value="cuboid">Balok Kertas</option><option value="character">Karakter 3D dari Kertas</option><option value="papercraft">Paper craft lainnya</option></select>
-<label for="theme" id="themeLabel">Tema atau objek prakarya</label>
-<input id="theme" type="text" placeholder="Contoh: kucing, unicorn pelangi, dinosaurus">
-<p class="note" id="helper">Pilih jenis prakarya, tulis tema yang kamu inginkan, lalu tekan tombol di bawah. ChatGPT akan terbuka dengan instruksi untuk membuat desain yang ramah anak.</p>
-<button class="primary" id="makeWithAI" type="button">✨ Ayo Buat</button>
-<div class="tip" id="tip"><strong>Tips:</strong> Untuk pola yang lebih mudah dirakit, minta desain mencakup ukuran A4, panel depan-belakang, garis potong, garis lipat, tab lem, serta petunjuk perakitan yang jelas.</div>
-<div class="tip squishy-tip" id="squishyTip" aria-live="polite"><strong>Tips khusus Squishy:</strong> Gunakan bentuk karakter yang mudah dikenali, panel depan dan belakang yang cocok, strip sisi untuk memberi volume, tab lem yang cukup, serta garis potong dan lipat yang mudah dibedakan.</div>
-</section></main>
+<header>
+  <h1>✂️ Kids Craft Maker</h1>
+  <p id="tagline">Buat ide prakarya anak dengan bantuan ChatGPT!</p>
+</header>
+<main>
+  <section class="panel">
+    <h2 id="settingsTitle">Pengaturan Prakarya</h2>
+
+    <label for="language" id="languageLabel">Bahasa hasil desain</label>
+    <select id="language">
+      <option value="id">Bahasa Indonesia</option>
+      <option value="en">English</option>
+    </select>
+
+    <label for="product" id="productLabel">Jenis prakarya</label>
+    <select id="product">
+      <option value="squishy">DIY Squishy Kertas</option>
+      <option value="envelope">Amplop Kreatif</option>
+      <option value="cube">Kubus Kertas</option>
+      <option value="cuboid">Balok Kertas</option>
+      <option value="character">Karakter 3D dari Kertas</option>
+      <option value="papercraft">Paper craft lainnya</option>
+    </select>
+
+    <label for="theme" id="themeLabel">Tema atau objek prakarya</label>
+    <input id="theme" type="text" placeholder="Contoh: kucing, unicorn pelangi, dinosaurus">
+
+    <p class="note" id="helper">Pilih jenis prakarya, tulis tema yang kamu inginkan, lalu tekan tombol di bawah. ChatGPT akan terbuka dengan instruksi untuk membuat desain yang ramah anak.</p>
+
+    <button class="primary" id="makeWithAI">✨ Ayo Buat</button>
+
+    <div class="tip" id="tip">
+      <strong>Tips:</strong> Untuk pola yang lebih mudah dirakit, minta desain mencakup ukuran A4, panel depan-belakang, garis potong, garis lipat, tab lem, serta petunjuk perakitan yang jelas.
+    </div>
+    <div class="tip squishy-tip" id="squishyTip" aria-live="polite">
+      <strong>Tips khusus Squishy:</strong> Gunakan bentuk karakter yang mudah dikenali, panel depan dan belakang yang cocok, strip sisi untuk memberi volume, tab lem yang cukup, serta garis potong dan lipat yang mudah dibedakan.
+    </div>
+  </section>
+</main>
 <footer>Kids Craft Maker · Ide prakarya anak</footer>
+
 <script>
 const $ = id => document.getElementById(id);
-const squishyPrompt = theme => `Create ONE unique, cute, child-friendly DIY PAPER SQUISHY craft template featuring "${theme}". Generate exactly ONE squishy design per request, never a catalog or multiple designs. The result must be a practical, assemble-able hollow 3D paper pillow, not merely a character illustration or coloring page.
 
-DESIGN STYLE:
-Create an adorable, polished kawaii character inspired by the charm of cute handmade squishy crafts. Use a distinctive silhouette, expressive sparkling eyes, rosy cheeks, tiny decorative details, harmonious cheerful pastel colors, and bold clean outlines. Make the requested theme immediately recognizable. Invent a charming, cohesive design with a visually appealing character face and matching details on the front and back. Avoid generic plain oval faces.
-
-PRINT LAYOUT:
-Use A4 landscape, high resolution, print-ready, with safe margins and a clean white background. Arrange the parts clearly and make them large enough to cut and assemble. If one sheet is insufficient, use additional clearly numbered A4 landscape pages rather than shrinking the parts too much.
-
-REQUIRED TEMPLATE PARTS:
-1. One front panel with the complete character artwork.
-2. One matching back panel with the same outer silhouette.
-3. Side-wall or gusset strips that connect the front and back to form a shallow hollow 3D paper pillow, approximately 20 mm deep where practical.
-4. Sufficient glue tabs, including tabs for curved edges and a clearly identified final closing tab.
-5. Clearly labeled part names and dimensions in millimeters.
-
-CUTTING AND FOLDING:
-Use solid lines for CUT and dashed lines for FOLD. Keep tabs separate from neighboring pieces. Ensure the front and back outlines match the gusset edges. Avoid overlapping pieces, clipped parts, ambiguous connections, and impossible folds. Include a small finished-product preview that does not cover the template.
-
-ASSEMBLY TUTORIAL:
-Include 6–8 numbered steps in simple, child-friendly English: print at 100% scale, cut out the pieces, fold the tabs, connect the side strips, attach the front panel, attach the back panel, leave the final opening until the other seams are secure, then close carefully. Include a short materials list and a simple line key. An adult should assist children with scissors.
-
-FINAL QUALITY:
-The template must be physically buildable with paper, scissors, and glue. Make the instructions readable and the design attractive enough for a children's craft product. Do not include a logo, watermark, creator name, or signature.`;
 const copy = {
-id: {
-tagline:'Buat ide prakarya anak dengan bantuan ChatGPT!',settings:'Pengaturan Prakarya',language:'Bahasa hasil desain',product:'Jenis prakarya',theme:'Tema atau objek prakarya',placeholder:'Contoh: kucing, unicorn pelangi, dinosaurus',
-helper:'Pilih jenis prakarya, tulis tema yang kamu inginkan, lalu tekan tombol di bawah. ChatGPT akan terbuka dengan instruksi untuk membuat desain yang ramah anak.',
-button:'✨ Ayo Buat',tip:'Tips:',tipText:' Untuk pola yang lebih mudah dirakit, minta desain mencakup ukuran A4, panel depan-belakang, garis potong, garis lipat, tab lem, serta petunjuk perakitan yang jelas.',missing:'Tulis tema atau objek prakarya terlebih dahulu.',
-products:{squishy:'pola DIY squishy kertas',envelope:'pola amplop kreatif dari kertas',cube:'pola kubus kertas',cuboid:'pola balok kertas',character:'pola karakter 3D dari kertas',papercraft:'template prakarya kertas'},
-prompt:(product,theme)=>`Buat desain ${product} bertema "${theme}" yang menarik, jelas, dan ramah anak. Buat hasil yang praktis untuk kegiatan prakarya anak dan siap dicetak pada kertas A4. Tampilkan pola datar yang benar-benar dapat dirakit, bukan hanya gambar dekoratif. Sertakan panel yang diperlukan, garis potong utuh, garis lipat putus-putus, tab lem yang cukup, label yang mudah dibaca, ukuran dalam milimeter, serta petunjuk perakitan langkah demi langkah. Pastikan semua bagian muat di halaman A4 dan tidak terpotong. Gunakan kartun lucu dengan warna pastel cerah. Jangan sertakan logo, watermark, nama pembuat, atau tanda tangan.`
-},
-en:{
-tagline:'Create kids’ craft ideas with help from ChatGPT!',settings:'Craft Settings',language:'Design language',product:'Craft type',theme:'Craft theme or object',placeholder:'Example: cat, rainbow unicorn, dinosaur',
-helper:'Choose a craft type, enter your theme, then tap the button below. ChatGPT will open with instructions for a child-friendly design.',
-button:'✨ Ayo Buat',tip:'Tip:',tipText:' For an easy-to-assemble template, ask for A4 sizing, front and back panels, cut lines, fold lines, glue tabs, and clear assembly instructions.',missing:'Please enter a craft theme or object first.',
-products:{squishy:'DIY paper squishy template',envelope:'creative paper envelope template',cube:'paper cube net',cuboid:'paper rectangular prism net',character:'3D paper character template',papercraft:'paper craft template'},
-prompt:(product,theme)=>`Create a cute, child-friendly ${product} featuring "${theme}". Make it practical for a children's craft activity and ready to print on A4 paper. Show a genuinely assemble-able flat template, not just a decorative illustration. Include all necessary panels, solid cut lines, dashed fold lines, sufficient glue tabs, readable labels, dimensions in millimeters, and step-by-step assembly instructions. Ensure every part fits on the A4 page without being clipped. Use a cute cartoon style with cheerful pastel colors. Do not include logos, watermarks, creator names, or signatures.`
-}
+  id: {
+    tagline: 'Buat ide prakarya anak dengan bantuan ChatGPT!',
+    settings: 'Pengaturan Prakarya',
+    language: 'Bahasa hasil desain',
+    product: 'Jenis prakarya',
+    theme: 'Tema atau objek prakarya',
+    placeholder: 'Contoh: kucing, unicorn pelangi, dinosaurus',
+    helper: 'Pilih jenis prakarya, tulis tema yang kamu inginkan, lalu tekan tombol di bawah. ChatGPT akan terbuka dengan instruksi untuk membuat desain yang ramah anak.',
+    button: '✨ Ayo Buat',
+    tip: 'Tips:',
+    tipText: ' Untuk pola yang lebih mudah dirakit, minta desain mencakup ukuran A4, panel depan-belakang, garis potong, garis lipat, tab lem, serta petunjuk perakitan yang jelas.',
+    missing: 'Tulis tema atau objek prakarya terlebih dahulu.',
+    products: {
+      squishy: 'pola DIY squishy kertas',
+      envelope: 'pola amplop kreatif dari kertas',
+      cube: 'pola kubus kertas',
+      cuboid: 'pola balok kertas',
+      character: 'pola karakter 3D dari kertas',
+      papercraft: 'template prakarya kertas'
+    },
+    prompt: (product, theme) => `Buat desain ${product} bertema "${theme}" yang menarik, jelas, dan ramah anak. Buat hasil yang praktis untuk kegiatan prakarya anak dan siap dicetak pada kertas A4. Tampilkan pola datar yang benar-benar dapat dirakit, bukan hanya gambar dekoratif. Sertakan panel yang diperlukan, garis potong utuh, garis lipat putus-putus, tab lem yang cukup, label yang mudah dibaca, ukuran dalam milimeter, serta petunjuk perakitan langkah demi langkah. Pastikan semua bagian muat di halaman A4 dan tidak terpotong. Gunakan kartun lucu dengan warna pastel cerah. Jangan sertakan logo, watermark, nama pembuat, atau tanda tangan.`,
+    squishyPrompt: (theme, lang) => `Create a cute, child-friendly DIY PAPER SQUISHY template featuring "${theme}". The selected output language is ${lang === 'en' ? 'English' : 'Bahasa Indonesia'}. CRITICAL LANGUAGE RULE: Every visible word in the generated design MUST be written only in ${lang === 'en' ? 'English' : 'Bahasa Indonesia'}. This includes the title, part labels, measurements and measurement labels, cut/fold legend, glue-tab labels, numbered assembly steps, safety notes, and any other text. Do not mix languages, do not use English labels when Bahasa Indonesia is selected, and do not translate the user-entered theme unless needed for natural wording. This must be a practical, assemble-able hollow 3D paper pillow craft, not just a character illustration or a flat coloring page. PRINT LAYOUT: A4 landscape, print-ready, high resolution, with safe margins. TEMPLATE PARTS: include a matching front panel and back panel with the same outer silhouette; include side-wall/gusset strips sized to create a shallow 3D pillow (suggest about 20 mm finished depth where the shape allows); divide curved side walls into clearly numbered segments if needed; include generous glue tabs on the side strips and a clearly marked final closing tab/opening. Translate all part labels naturally into the selected output language. LINE KEY: solid black lines for cut lines and dashed lines for fold lines; label these in the selected output language. DESIGN: make the character immediately recognizable with clear signature features, cheerful pastel colors, bold clean outlines, a cute expressive face, and matching front/back artwork. Add small measurements in millimeters and 4–6 short, easy-to-follow assembly steps entirely in the selected output language. Fit all pieces neatly on the page; if they cannot fit legibly on one A4 sheet, use two clearly numbered A4 landscape pages instead of shrinking parts too much. Make the template physically buildable and ensure tabs do not overlap other pieces. Do not include a logo, watermark, creator name, or signature.`
+  },
+  en: {
+    tagline: 'Create kids’ craft ideas with help from ChatGPT!',
+    settings: 'Craft Settings',
+    language: 'Design language',
+    product: 'Craft type',
+    theme: 'Craft theme or object',
+    placeholder: 'Example: cat, rainbow unicorn, dinosaur',
+    helper: 'Choose a craft type, enter your theme, then tap the button below. ChatGPT will open with instructions for a child-friendly design.',
+    button: '✨ Ayo Buat',
+    tip: 'Tip:',
+    tipText: ' For an easy-to-assemble template, ask for A4 sizing, front and back panels, cut lines, fold lines, glue tabs, and clear assembly instructions.',
+    missing: 'Please enter a craft theme or object first.',
+    products: {
+      squishy: 'DIY paper squishy template',
+      envelope: 'creative paper envelope template',
+      cube: 'paper cube net',
+      cuboid: 'paper rectangular prism net',
+      character: '3D paper character template',
+      papercraft: 'paper craft template'
+    },
+    prompt: (product, theme) => `Create a cute, child-friendly ${product} featuring "${theme}". Make it practical for a children's craft activity and ready to print on A4 paper. Show a genuinely assemble-able flat template, not just a decorative illustration. Include all necessary panels, solid cut lines, dashed fold lines, sufficient glue tabs, readable labels, dimensions in millimeters, and step-by-step assembly instructions. Ensure every part fits on the A4 page without being clipped. Use a cute cartoon style with cheerful pastel colors. Do not include logos, watermarks, creator names, or signatures.`,
+    squishyPrompt: (theme, lang) => `Create a cute, child-friendly DIY PAPER SQUISHY template featuring "${theme}". The selected output language is ${lang === 'en' ? 'English' : 'Bahasa Indonesia'}. CRITICAL LANGUAGE RULE: Every visible word in the generated design MUST be written only in ${lang === 'en' ? 'English' : 'Bahasa Indonesia'}. This includes the title, part labels, measurements and measurement labels, cut/fold legend, glue-tab labels, numbered assembly steps, safety notes, and any other text. Do not mix languages, do not use English labels when Bahasa Indonesia is selected, and do not translate the user-entered theme unless needed for natural wording. This must be a practical, assemble-able hollow 3D paper pillow craft, not just a character illustration or a flat coloring page. PRINT LAYOUT: A4 landscape, print-ready, high resolution, with safe margins. TEMPLATE PARTS: include a matching front panel and back panel with the same outer silhouette; include side-wall/gusset strips sized to create a shallow 3D pillow (suggest about 20 mm finished depth where the shape allows); divide curved side walls into clearly numbered segments if needed; include generous glue tabs on the side strips and a clearly marked final closing tab/opening. Translate all part labels naturally into the selected output language. LINE KEY: solid black lines for cut lines and dashed lines for fold lines; label these in the selected output language. DESIGN: make the character immediately recognizable with clear signature features, cheerful pastel colors, bold clean outlines, a cute expressive face, and matching front/back artwork. Add small measurements in millimeters and 4–6 short, easy-to-follow assembly steps entirely in the selected output language. Fit all pieces neatly on the page; if they cannot fit legibly on one A4 sheet, use two clearly numbered A4 landscape pages instead of shrinking parts too much. Make the template physically buildable and ensure tabs do not overlap other pieces. Do not include a logo, watermark, creator name, or signature.`
+  }
 };
-function applyLanguage(){
-const lang=$('language').value,t=copy[lang];document.documentElement.lang=lang;
-$('tagline').textContent=t.tagline;$('settingsTitle').textContent=t.settings;$('languageLabel').textContent=t.language;$('productLabel').textContent=t.product;$('themeLabel').textContent=t.theme;$('theme').placeholder=t.placeholder;$('helper').textContent=t.helper;$('makeWithAI').textContent=t.button;
-$('tip').replaceChildren();const strong=document.createElement('strong');strong.textContent=t.tip;$('tip').append(strong,document.createTextNode(t.tipText));
-$('squishyTip').innerHTML=lang==='en'?'<strong>Squishy tip:</strong> Use a recognizable character silhouette, matching front and back panels, side strips for 3D depth, enough glue tabs, and clearly different cut/fold lines.':'<strong>Tips khusus Squishy:</strong> Gunakan bentuk karakter yang mudah dikenali, panel depan dan belakang yang cocok, strip sisi untuk memberi volume, tab lem yang cukup, serta garis potong dan lipat yang mudah dibedakan.';
-$('squishyTip').hidden=$('product').value!=='squishy';
-const options=$('product').options;const labels=lang==='en'?['DIY Paper Squishy','Creative Envelope','Paper Cube','Paper Rectangular Prism','3D Paper Character','Other Paper Craft']:['DIY Squishy Kertas','Amplop Kreatif','Kubus Kertas','Balok Kertas','Karakter 3D dari Kertas','Paper craft lainnya'];Array.from(options).forEach((option,i)=>option.textContent=labels[i]);
+
+function applyLanguage() {
+  const lang = $('language').value;
+  const t = copy[lang];
+  document.documentElement.lang = lang;
+  $('tagline').textContent = t.tagline;
+  $('settingsTitle').textContent = t.settings;
+  $('languageLabel').textContent = t.language;
+  $('productLabel').textContent = t.product;
+  $('themeLabel').textContent = t.theme;
+  $('theme').placeholder = t.placeholder;
+  $('helper').textContent = t.helper;
+  $('makeWithAI').textContent = t.button;
+  $('tip').replaceChildren();
+  const strong = document.createElement('strong');
+  strong.textContent = t.tip;
+  $('tip').append(strong, document.createTextNode(t.tipText));
+  $('squishyTip').innerHTML = lang === 'en'
+    ? '<strong>Squishy tip:</strong> Use a recognizable character silhouette, matching front and back panels, side strips for 3D depth, enough glue tabs, and clearly different cut/fold lines.'
+    : '<strong>Tips khusus Squishy:</strong> Gunakan bentuk karakter yang mudah dikenali, panel depan dan belakang yang cocok, strip sisi untuk memberi volume, tab lem yang cukup, serta garis potong dan lipat yang mudah dibedakan.';
+  updateProductTips();
+  const options = $('product').options;
+  const labels = lang === 'en'
+    ? ['DIY Paper Squishy', 'Creative Envelope', 'Paper Cube', 'Paper Rectangular Prism', '3D Paper Character', 'Other Paper Craft']
+    : ['DIY Squishy Kertas', 'Amplop Kreatif', 'Kubus Kertas', 'Balok Kertas', 'Karakter 3D dari Kertas', 'Paper craft lainnya'];
+  Array.from(options).forEach((option, i) => option.textContent = labels[i]);
 }
-$('language').addEventListener('change',applyLanguage);
-$('product').addEventListener('change',()=>{$('squishyTip').hidden=$('product').value!=='squishy';});
-$('makeWithAI').addEventListener('click',()=>{
-const lang=$('language').value,theme=$('theme').value.trim();if(!theme){alert(copy[lang].missing);$('theme').focus();return;}
-const key=$('product').value, productName=copy.en.products[key];
-const prompt=key==='squishy'?squishyPrompt(theme):copy.en.prompt(productName,theme);
-const url='https://chatgpt.com/?q='+encodeURIComponent(prompt);
-const newTab=window.open(url,'_blank');
-if(!newTab){window.location.href=url;}
+
+function updateProductTips() {
+  $('squishyTip').hidden = $('product').value !== 'squishy';
+}
+
+$('language').addEventListener('change', applyLanguage);
+$('product').addEventListener('change', updateProductTips);
+
+$('makeWithAI').addEventListener('click', () => {
+  const lang = $('language').value;
+  const theme = $('theme').value.trim();
+  if (!theme) {
+    alert(copy[lang].missing);
+    $('theme').focus();
+    return;
+  }
+
+  const productKey = $('product').value;
+  // The selected language controls the visible text requested for DIY Squishy.
+  const productName = copy.en.products[productKey];
+  // Squishy gets a more specific buildable template prompt; other craft types keep their existing prompt.
+  const prompt = productKey === 'squishy'
+    ? copy[lang].squishyPrompt(theme, lang)
+    : copy.en.prompt(productName, theme);
+  const url = 'https://chatgpt.com/?q=' + encodeURIComponent(prompt);
+  const opened = window.open(url, '_blank');
+
+  if (!opened) {
+    // Fallback for browsers that block a new tab.
+    window.location.href = url;
+  }
 });
+
 applyLanguage();
 </script>
 </body>
